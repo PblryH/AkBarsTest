@@ -20,6 +20,7 @@ abstract public class VHContentWithToolbar extends BaseVH {
 
     @BindView(R.id.content)
     protected FrameLayout content;
+
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 

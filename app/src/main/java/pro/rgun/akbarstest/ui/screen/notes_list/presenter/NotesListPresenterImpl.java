@@ -16,4 +16,9 @@ public class NotesListPresenterImpl implements NotesListPresenter {
         mView.setPresenter(this);
         mModel = model;
     }
+
+    @Override
+    public void onMenuChooseStorageClicked() {
+        mView.showToast("onMenuChooseStorageClicked");
+    }
 }

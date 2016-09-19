@@ -30,17 +30,16 @@ public interface BaseView<P> {
     void unbindActivity();
 
     /**
+     * Получить вью компонент
+     * @return {@link View}
+     */
+    View getView();
+
+    /**
      * Инициализация вью
      * Вызывается в методе Fragment#onCreateView
      * @param inflater
      * @param view
      */
     void initView(LayoutInflater inflater, ViewGroup view);
-
-
-    /**
-     * Получить вью компонент
-     * @return {@link View}
-     */
-    View getView();
 }

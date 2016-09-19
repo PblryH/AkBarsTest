@@ -51,14 +51,13 @@ public class NotesListFragment extends BaseRetainFragment<NotesListView> {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        mView.onCreateOptionsMenu(menu, inflater);
+        mView.onCreateOptionsMenu(menu, inflater);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        return mView.onOptionsItemSelected(item);
-        return false;
+        return mView.onOptionsItemSelected(item);
     }
 
 }
