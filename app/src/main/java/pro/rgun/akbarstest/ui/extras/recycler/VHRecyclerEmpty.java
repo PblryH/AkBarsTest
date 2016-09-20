@@ -1,6 +1,8 @@
 package pro.rgun.akbarstest.ui.extras.recycler;
 
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pro.rgun.akbarstest.R;
@@ -18,6 +20,8 @@ public class VHRecyclerEmpty {
     @BindView(R.id.list_empty)
     public View empty;
 
+    @BindView(R.id.addNote)
+    public FloatingActionButton addNote;
 
     public VHRecyclerEmpty(View v) {
         ButterKnife.bind(this, v);

@@ -1,12 +1,9 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.view.recycler;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.ArrayList;
 
@@ -14,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pro.rgun.akbarstest.R;
 import pro.rgun.akbarstest.ui.extras.recycler.RecyclerViewAdapter;
-import timber.log.Timber;
+import pro.rgun.akbarstest.ui.extras.tools.RippleEffectWrapper;
 
 /**
  * Created by rgun on 03.12.15.
@@ -29,10 +26,8 @@ public class NotesListAdapter extends RecyclerViewAdapter<CheckListItemModel, No
 
     @Override
     protected CheckListItemViewHolder createNormalViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(CheckListItemViewHolder.LAYOUT, parent, false);
-        RxView.clicks(view).subscribe(aVoid -> Timber.d("itemView click1"));
-        Timber.d("itemView click1");
-        return new CheckListItemViewHolder(this, view);
+        ViewGroup viewGroup = new RippleEffectWrapper().addWrapper(CheckListItemViewHolder.LAYOUT, parent);
+        return new CheckListItemViewHolder(this, viewGroup);
     }
 
     @Override
@@ -68,9 +63,6 @@ public class NotesListAdapter extends RecyclerViewAdapter<CheckListItemModel, No
             super(itemView);
             mNotesListAdapter = notesListAdapter;
             ButterKnife.bind(this, itemView);
-            RxView.clicks(itemView).subscribe(aVoid -> Timber.d("itemView click1"));
-            itemView.setOnClickListener(view -> Timber.d("itemView click2"));
-//            title.setOnClickListener(view -> Timber.d("title click"));
             itemView.setOnClickListener(this);
         }
 

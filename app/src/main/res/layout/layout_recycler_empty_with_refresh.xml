@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <pro.rgun.akbarstest.ui.extras.recycler.FrameSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
@@ -10,15 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <pro.rgun.akbarstest.ui.extras.recycler.RecyclerViewEmptySupport
-            android:id="@+id/list"
-            tools:listitem="@layout/list_item_notes_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:divider="#d6d6d6"
-            android:dividerHeight="2dp"
-            android:scrollbars="none"
-            android:transcriptMode="alwaysScroll" />
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/attachment_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <pro.rgun.akbarstest.ui.extras.recycler.RecyclerViewEmptySupport
+                android:id="@+id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:divider="#d6d6d6"
+                android:dividerHeight="2dp"
+                android:scrollbars="none"
+                android:transcriptMode="alwaysScroll"
+                tools:listitem="@layout/list_item_notes_list"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/addNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add_white_24dp"
+                app:layout_anchor="@id/list"
+                app:layout_anchorGravity="bottom|right|end"
+                app:layout_behavior="pro.rgun.akbarstest.ui.extras.tools.FABScrollBehavior"/>
+
+        </android.support.design.widget.CoordinatorLayout>
 
         <ScrollView
             android:id="@+id/list_empty"
@@ -38,7 +57,7 @@
                     android:layout_height="128dp"
                     android:contentDescription="@string/empty"
                     android:gravity="center_vertical|center_horizontal"
-                    android:src="@drawable/ic_description_black_24dp" />
+                    android:src="@drawable/ic_description_black_24dp"/>
 
             </LinearLayout>
 
