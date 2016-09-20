@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.screen.notes_list.NotesListActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
-        android:layout_alignParentTop="true"
-        android:elevation="@dimen/toolbarElevation"
-        android:id="@+id/toolbar"
-        android:background="@android:color/white" />
-    <!--<include layout="@layout/layout_recycler_empty_with_refresh"/>-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_below="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <include layout="@layout/layout_recycler_empty_with_refresh"/>
 
 </RelativeLayout>

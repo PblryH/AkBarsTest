@@ -104,8 +104,9 @@ public class NotesListViewImpl implements NotesListView {
 
     private void initRecyclerView() {
         mLayoutManager = new LinearLayoutManager(mActivity);
-        vh.recycler.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL_LIST));
-        vh.recycler.setLayoutManager(mLayoutManager);
-        vh.recycler.setAdapter(mAdapter);
+        vh.recycler.recyclerView.setEmptyView(vh.recycler.empty);
+        vh.recycler.recyclerView.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL_LIST));
+        vh.recycler.recyclerView.setLayoutManager(mLayoutManager);
+        vh.recycler.recyclerView.setAdapter(mAdapter);
     }
 }

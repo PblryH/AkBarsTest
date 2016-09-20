@@ -17,8 +17,6 @@
             android:layout_height="fill_parent"
             android:divider="#d6d6d6"
             android:dividerHeight="2dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:scrollbars="none"
             android:transcriptMode="alwaysScroll" />
 
@@ -35,12 +33,12 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <!--<ImageView-->
-                    <!--android:layout_width="128dp"-->
-                    <!--android:layout_height="128dp"-->
-                    <!--android:contentDescription="@string/empty"-->
-                    <!--android:gravity="center_vertical|center_horizontal"-->
-                    <!--android:src="@drawable/ic_supervisor_account_black_24dp" />-->
+                <ImageView
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:contentDescription="@string/empty"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:src="@drawable/ic_description_black_24dp" />
 
             </LinearLayout>
 
