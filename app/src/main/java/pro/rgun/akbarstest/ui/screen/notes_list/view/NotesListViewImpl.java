@@ -105,7 +105,6 @@ public class NotesListViewImpl implements NotesListView {
         ArrayList<CheckListItemModel> list = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             CheckListItemModel checkListItemModel = new CheckListItemModel();
-            checkListItemModel.id = i;
             checkListItemModel.title = "My note " + i;
             checkListItemModel.createdDate = "14:00 January 14";
             list.add(checkListItemModel);
