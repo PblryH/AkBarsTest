@@ -19,6 +19,14 @@ public class NotesListPresenterImpl implements NotesListPresenter {
 
     @Override
     public void onMenuChooseStorageClicked() {
-        mView.showToast("onMenuChooseStorageClicked");
+        mView.showChooseStorageDialog(mModel.getCurrentStorageType(), (storageType) -> {
+            mModel.setCurrentStorageType(storageType);
+            mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
+        });
+    }
+
+    @Override
+    public void onInitViewComplete() {
+        mView.setCurrentStorageInfoInToolbarSubtitle(mModel.getCurrentStorageType());
     }
 }

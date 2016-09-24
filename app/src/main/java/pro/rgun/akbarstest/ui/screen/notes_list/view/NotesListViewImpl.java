@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import java.util.ArrayList;
 
 import pro.rgun.akbarstest.R;
+import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.extras.recycler.DividerItemDecoration;
 import pro.rgun.akbarstest.ui.screen.notes_list.presenter.NotesListPresenter;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.recycler.CheckListItemModel;
@@ -67,6 +69,7 @@ public class NotesListViewImpl implements NotesListView {
         initAdapter();
         initRecyclerView();
         RxView.clicks(vh.recycler.addNote).subscribe(aVoid -> showToast("asdfs"));
+        mPresenter.onInitViewComplete();
     }
 
 
@@ -89,6 +92,51 @@ public class NotesListViewImpl implements NotesListView {
     @Override
     public void showToast(String message) {
         Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+    }
+
+    AlertDialog chooseStorageDialog;
+
+    @Override
+    public void showChooseStorageDialog(StorageType currentStorageType, ChooserStorageDialogListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("Выберете хранилище");
+        builder.setSingleChoiceItems(getStorageTypeNames(), currentStorageType.ordinal(), (dialog, item) -> {
+            listener.onStorageSelected(StorageType.values()[item]);
+            chooseStorageDialog.dismiss();
+        });
+        chooseStorageDialog = builder.create();
+        chooseStorageDialog.show();
+    }
+
+    @Override
+    public void setCurrentStorageInfoInToolbarSubtitle(StorageType currentStorageType) {
+        mActivity.getSupportActionBar()
+                .setSubtitle(String.format("в %s", getStorageTypeNames()[currentStorageType.ordinal()]));
+    }
+
+    private String[] getStorageTypeNames(){
+        StorageType[] values = StorageType.values();
+        String[] names = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            StorageType storageType = values[i];
+            String name = "Unknown storage";
+            switch (storageType){
+                case SHARED_PREFERENCES:
+                    name = "Shared preferences";
+                    break;
+                case SQLITE:
+                    name = "SQLite";
+                    break;
+                case FILE:
+                    name = "File";
+                    break;
+                case VKWALL:
+                    name = "VK Wall";
+                    break;
+            }
+            names[i] = name;
+        }
+        return names;
     }
 
     private void initToolbar() {

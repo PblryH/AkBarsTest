@@ -7,4 +7,5 @@ public interface NotesListPresenter {
 
     void onMenuChooseStorageClicked();
 
+    void onInitViewComplete();
 }
