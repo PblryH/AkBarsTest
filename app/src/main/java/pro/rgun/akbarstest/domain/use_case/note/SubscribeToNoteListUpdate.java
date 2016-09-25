@@ -6,13 +6,12 @@ import pro.rgun.akbarstest.domain.repository.NotesRepository;
  * Created by rgun on 24.09.16.
  */
 
-public class DeleteNote extends NoteUseCase {
+public class SubscribeToNoteListUpdate extends NoteUseCase {
 
-    public DeleteNote(NotesRepository repository) {
+    public SubscribeToNoteListUpdate(NotesRepository repository) {
         super(repository);
     }
 
-    public void deleteNote(String id) {
-        mRepository.deleteNote(id);
-    }
+
+
 }

@@ -1,5 +1,7 @@
 package pro.rgun.akbarstest.domain.use_case.note;
 
+import java.util.List;
+
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.repository.NotesRepository;
 
@@ -7,13 +9,14 @@ import pro.rgun.akbarstest.domain.repository.NotesRepository;
  * Created by rgun on 24.09.16.
  */
 
-public class GetNote extends NoteUseCase {
+public class GetNoteList extends NoteUseCase{
 
-    public GetNote(NotesRepository repository) {
+
+    public GetNoteList(NotesRepository repository) {
         super(repository);
     }
 
-    public Note getNote(String id) {
-        return mRepository.getNote(id);
+    public List<Note> getNoteList() {
+        return mRepository.getAllNotes();
     }
 }
