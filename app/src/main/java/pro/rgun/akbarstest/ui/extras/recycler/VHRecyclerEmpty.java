@@ -5,6 +5,7 @@ import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import pro.rgun.akbarstest.R;
 
 
@@ -23,7 +24,13 @@ public class VHRecyclerEmpty {
     @BindView(R.id.addNote)
     public FloatingActionButton addNote;
 
+    private Unbinder unbinder;
+
     public VHRecyclerEmpty(View v) {
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
+    }
+
+    public void unbind() {
+        unbinder.unbind();
     }
 }

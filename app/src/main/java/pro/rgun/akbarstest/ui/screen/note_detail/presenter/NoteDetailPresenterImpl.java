@@ -16,4 +16,49 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
         mView.setPresenter(this);
         mModel = model;
     }
+
+    @Override
+    public void onHeadingClick() {
+        mView.setHeading();
+    }
+
+    @Override
+    public void onBoldClick() {
+        mView.setBold();
+    }
+
+    @Override
+    public void onItalicClick() {
+        mView.setItalic();
+    }
+
+    @Override
+    public void onUnorderedListClick() {
+        mView.setUnorderedList();
+    }
+
+    @Override
+    public void onOrderedListClick() {
+        mView.setOrderedList();
+    }
+
+    @Override
+    public void onUndoClick() {
+        mView.undo();
+    }
+
+    @Override
+    public void onRedoClick() {
+        mView.redo();
+    }
+
+    @Override
+    public void onHomeClicked() {
+        mView.back();
+    }
+
+    @Override
+    public void onMenuDeleteClicked() {
+        mView.showDeleteDialog();
+    }
 }

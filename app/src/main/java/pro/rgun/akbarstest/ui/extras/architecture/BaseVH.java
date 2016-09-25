@@ -22,9 +22,12 @@ abstract public class BaseVH {
 
     public void unbind() {
         unbinder.unbind();
+        unbindAll();
     }
 
     public View getView() {
         return mView;
     }
+
+    protected abstract void unbindAll();
 }

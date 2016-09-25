@@ -25,4 +25,10 @@ public class NotesListVH extends VHContentWithToolbar {
     public int getLayoutRes() {
         return LAYOUT;
     }
+
+
+    @Override
+    protected void unbindAll() {
+        recycler.unbind();
+    }
 }

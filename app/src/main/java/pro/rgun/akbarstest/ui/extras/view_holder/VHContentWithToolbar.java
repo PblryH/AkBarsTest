@@ -24,7 +24,6 @@ abstract public class VHContentWithToolbar extends BaseVH {
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
-    private LayoutInflater mInflater;
 
     public VHContentWithToolbar(LayoutInflater inflater, ViewGroup view){
         this(inflater, view, true);
@@ -32,15 +31,14 @@ abstract public class VHContentWithToolbar extends BaseVH {
 
     public VHContentWithToolbar(LayoutInflater inflater, ViewGroup view, boolean isElevated) {
         super(inflater, view, layout);
-        mInflater = inflater;
         if (!isElevated && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setElevation(0);
         }
-        inflateLayoutIntoContent();
+        inflateLayoutIntoContent(inflater);
     }
 
-    private void inflateLayoutIntoContent() {
-        mInflater.inflate(getLayoutRes(), content);
+    private void inflateLayoutIntoContent(LayoutInflater inflater) {
+        inflater.inflate(getLayoutRes(), content);
     }
 
     abstract public int getLayoutRes();

@@ -35,6 +35,8 @@ dependencies {
     compile "com.android.support:design:24.2.0"
     compile 'com.balysv:material-ripple:1.0.2'
 
+    compile 'jp.wasabeef:richeditor-android:1.2.1'
+
     compile "com.android.support:multidex:1.0.1"
 
     apt 'com.google.dagger:dagger-compiler:2.5'
