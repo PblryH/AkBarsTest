@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,8 +40,11 @@ import pro.rgun.akbarstest.ui.screen.notes_list.view.recycler.NotesListAdapter;
 /**
  * Created by rgun on 10.09.16.
  */
-public class NotesListViewImpl implements NotesListView {
+public class NotesListViewImpl implements
+        NotesListView,
+        SwipeRefreshLayout.OnRefreshListener {
 
+    AlertDialog chooseStorageDialog;
     private NotesListPresenter mPresenter;
     private AppCompatActivity mActivity;
     private NotesListVH vh;
@@ -77,7 +81,6 @@ public class NotesListViewImpl implements NotesListView {
         mPresenter.onInitViewComplete();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_notes_list, menu);
@@ -98,8 +101,6 @@ public class NotesListViewImpl implements NotesListView {
     public void showToast(String message) {
         Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
     }
-
-    AlertDialog chooseStorageDialog;
 
     @Override
     public void showChooseStorageDialog(StorageType currentStorageType, ChooserStorageDialogListener listener) {
@@ -133,6 +134,7 @@ public class NotesListViewImpl implements NotesListView {
                 })
                 .toList()
                 .subscribe(checkListItemModels -> mAdapter.addAll(checkListItemModels));
+        vh.recycler.swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -147,13 +149,13 @@ public class NotesListViewImpl implements NotesListView {
         mActivity.startActivity(intent);
     }
 
-    private String[] getStorageTypeNames(){
+    private String[] getStorageTypeNames() {
         StorageType[] values = StorageType.values();
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             StorageType storageType = values[i];
             String name = "Unknown storage";
-            switch (storageType){
+            switch (storageType) {
                 case SHARED_PREFERENCES:
                     name = "Shared preferences";
                     break;
@@ -179,7 +181,6 @@ public class NotesListViewImpl implements NotesListView {
     }
 
 
-
     private void initAdapter() {
         mAdapter = new NotesListAdapter();
         mAdapter.setItemClickListener((view, position, model) -> mPresenter.onItemClick(model.id));
@@ -195,6 +196,7 @@ public class NotesListViewImpl implements NotesListView {
         vh.recycler.recyclerView.setAdapter(mAdapter);
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
+        vh.recycler.swipeRefreshLayout.setOnRefreshListener(this);
     }
 
 
@@ -230,7 +232,7 @@ public class NotesListViewImpl implements NotesListView {
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 int position = viewHolder.getAdapterPosition();
-                NotesListAdapter testAdapter = (NotesListAdapter)recyclerView.getAdapter();
+                NotesListAdapter testAdapter = (NotesListAdapter) recyclerView.getAdapter();
                 if (testAdapter.isUndoOn() && testAdapter.isPendingRemoval(position)) {
                     return 0;
                 }
@@ -240,7 +242,7 @@ public class NotesListViewImpl implements NotesListView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                NotesListAdapter adapter = (NotesListAdapter)vh.recycler.recyclerView.getAdapter();
+                NotesListAdapter adapter = (NotesListAdapter) vh.recycler.recyclerView.getAdapter();
                 boolean undoOn = adapter.isUndoOn();
                 if (undoOn) {
                     adapter.pendingRemoval(swipedPosition);
@@ -274,7 +276,7 @@ public class NotesListViewImpl implements NotesListView {
 
                 int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
                 int xMarkRight = itemView.getRight() - xMarkMargin;
-                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
                 int xMarkBottom = xMarkTop + intrinsicHeight;
                 xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
 
@@ -372,4 +374,9 @@ public class NotesListViewImpl implements NotesListView {
         });
     }
 
+    @Override
+    public void onRefresh() {
+        vh.recycler.swipeRefreshLayout.setRefreshing(true);
+        mPresenter.onPullToRefresh();
+    }
 }

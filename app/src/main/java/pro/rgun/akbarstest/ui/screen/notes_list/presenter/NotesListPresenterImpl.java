@@ -46,4 +46,9 @@ public class NotesListPresenterImpl implements NotesListPresenter {
     public void onItemDelete(String id) {
         mModel.deleteNote(id);
     }
+
+    @Override
+    public void onPullToRefresh() {
+        mModel.requestNotes(notes -> mView.fillNotes(notes));
+    }
 }

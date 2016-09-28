@@ -14,4 +14,6 @@ public interface NotesListPresenter {
     void onItemClick(String id);
 
     void onItemDelete(String id);
+
+    void onPullToRefresh();
 }
