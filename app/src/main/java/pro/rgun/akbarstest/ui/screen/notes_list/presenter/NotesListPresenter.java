@@ -8,4 +8,10 @@ public interface NotesListPresenter {
     void onMenuChooseStorageClicked();
 
     void onInitViewComplete();
+
+    void onAddClick();
+
+    void onItemClick(String id);
+
+    void onItemDelete(String id);
 }

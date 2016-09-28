@@ -49,4 +49,10 @@ public interface NoteDetailPresenter {
      * При нажатии на кнопку удаления заметки
      */
     void onMenuDeleteClicked();
+
+    void saveNote();
+
+    void onInitViewComplete();
+
+    void deleteNote();
 }

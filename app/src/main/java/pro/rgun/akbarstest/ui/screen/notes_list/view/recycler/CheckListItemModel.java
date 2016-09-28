@@ -5,6 +5,8 @@ package pro.rgun.akbarstest.ui.screen.notes_list.view.recycler;
  */
 public class CheckListItemModel {
 
+    public String id;
+
     public String title;
 
     public String createdDate;

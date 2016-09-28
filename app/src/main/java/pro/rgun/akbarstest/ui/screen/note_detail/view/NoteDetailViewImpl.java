@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -46,6 +45,7 @@ public class NoteDetailViewImpl implements NoteDetailView {
         initToolbar();
         initEditor();
         initRichTextPanel();
+        mPresenter.onInitViewComplete();
     }
 
     private void initToolbar() {
@@ -149,8 +149,39 @@ public class NoteDetailViewImpl implements NoteDetailView {
     public void showDeleteDialog() {
         AlertDialog.Builder adb = new AlertDialog.Builder(mActivity);
         adb.setTitle("Вы действительно хотите удалить заметку?")
-                .setPositiveButton("Да", (dialogInterface, i) -> Toast.makeText(mActivity, "Удалить", Toast.LENGTH_SHORT).show())
+                .setPositiveButton("Да", (dialogInterface, i) -> mPresenter.deleteNote())
                 .setNegativeButton("Нет", null)
                 .create().show();
+    }
+
+    @Override
+    public void showSaveDialog() {
+        new AlertDialog.Builder(mActivity)
+                .setTitle("Сохранить изменения")
+                .setPositiveButton("Да", (dialogInterface, i) -> mPresenter.saveNote())
+                .setNegativeButton("Нет", (dialogInterface, i) -> back())
+                .create()
+                .show();
+
+    }
+
+    @Override
+    public String getTitle() {
+        return vh.note.title.getText().toString();
+    }
+
+    @Override
+    public String getText() {
+        return vh.note.editor.getHtml();
+    }
+
+    @Override
+    public void setTitle(String title) {
+        vh.note.title.setText(title);
+    }
+
+    @Override
+    public void setText(String text) {
+        vh.note.editor.setHtml(text);
     }
 }

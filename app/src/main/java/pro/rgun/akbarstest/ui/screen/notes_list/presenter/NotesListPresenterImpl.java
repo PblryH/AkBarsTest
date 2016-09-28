@@ -22,11 +22,28 @@ public class NotesListPresenterImpl implements NotesListPresenter {
         mView.showChooseStorageDialog(mModel.getCurrentStorageType(), (storageType) -> {
             mModel.setCurrentStorageType(storageType);
             mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
+            mModel.requestNotes(notes -> mView.fillNotes(notes));
         });
     }
 
     @Override
     public void onInitViewComplete() {
         mView.setCurrentStorageInfoInToolbarSubtitle(mModel.getCurrentStorageType());
+        mModel.requestNotes(notes -> mView.fillNotes(notes));
+    }
+
+    @Override
+    public void onAddClick() {
+        mView.showNoteDetailScreen();
+    }
+
+    @Override
+    public void onItemClick(String id) {
+        mView.showNoteDetailScreen(id);
+    }
+
+    @Override
+    public void onItemDelete(String id) {
+        mModel.deleteNote(id);
     }
 }

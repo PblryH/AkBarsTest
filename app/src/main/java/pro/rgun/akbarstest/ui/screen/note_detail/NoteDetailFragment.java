@@ -35,9 +35,11 @@ public class NoteDetailFragment extends BaseRetainFragment<NoteDetailView> {
     @Override
     protected void initInjection() {
         NoteDetailComponent component = DaggerNoteDetailComponent.builder()
-                .noteDetailModule(new NoteDetailModule())
+                .noteDetailModule(new NoteDetailModule(getActivity()))
                 .build();
         component.inject(this);
+        String noteId = getActivity().getIntent().getStringExtra(NoteDetailActivity.EXTRA_NOTE_ID);
+        mModel.initNote(noteId);
     }
 
 

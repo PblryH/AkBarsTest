@@ -1,5 +1,6 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.view;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -21,11 +22,15 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import pro.rgun.akbarstest.R;
+import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.extras.recycler.DividerItemDecoration;
+import pro.rgun.akbarstest.ui.screen.note_detail.NoteDetailActivity;
 import pro.rgun.akbarstest.ui.screen.notes_list.presenter.NotesListPresenter;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.recycler.CheckListItemModel;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.recycler.NotesListAdapter;
@@ -68,7 +73,7 @@ public class NotesListViewImpl implements NotesListView {
         initToolbar();
         initAdapter();
         initRecyclerView();
-        RxView.clicks(vh.recycler.addNote).subscribe(aVoid -> showToast("asdfs"));
+        RxView.clicks(vh.recycler.addNote).subscribe(aVoid -> mPresenter.onAddClick());
         mPresenter.onInitViewComplete();
     }
 
@@ -114,6 +119,34 @@ public class NotesListViewImpl implements NotesListView {
                 .setSubtitle(String.format("в %s", getStorageTypeNames()[currentStorageType.ordinal()]));
     }
 
+    @Override
+    public void fillNotes(List<Note> notes) {
+        mAdapter.clear();
+        rx.Observable.from(notes)
+                .map(note -> {
+                    CheckListItemModel checkListItemModel = new CheckListItemModel();
+                    checkListItemModel.id = note.getId();
+                    checkListItemModel.title = note.getTitle();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+                    checkListItemModel.createdDate = simpleDateFormat.format(new Date(note.getDateTimeTS()));
+                    return checkListItemModel;
+                })
+                .toList()
+                .subscribe(checkListItemModels -> mAdapter.addAll(checkListItemModels));
+    }
+
+    @Override
+    public void showNoteDetailScreen() {
+        mActivity.startActivity(new Intent(mActivity, NoteDetailActivity.class));
+    }
+
+    @Override
+    public void showNoteDetailScreen(String id) {
+        Intent intent = new Intent(mActivity, NoteDetailActivity.class);
+        intent.putExtra(NoteDetailActivity.EXTRA_NOTE_ID, id);
+        mActivity.startActivity(intent);
+    }
+
     private String[] getStorageTypeNames(){
         StorageType[] values = StorageType.values();
         String[] names = new String[values.length];
@@ -149,15 +182,8 @@ public class NotesListViewImpl implements NotesListView {
 
     private void initAdapter() {
         mAdapter = new NotesListAdapter();
-        mAdapter.setOnItemClickListener((view, position, model) -> showToast(model.title));
-        ArrayList<CheckListItemModel> list = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            CheckListItemModel checkListItemModel = new CheckListItemModel();
-            checkListItemModel.title = "My note " + i;
-            checkListItemModel.createdDate = "14:00 January 14";
-            list.add(checkListItemModel);
-        }
-        mAdapter.addAll(list);
+        mAdapter.setItemClickListener((view, position, model) -> mPresenter.onItemClick(model.id));
+        mAdapter.setDeleteListener((position, model) -> mPresenter.onItemDelete(model.id));
         mAdapter.setUndoOn(true);
     }
 
@@ -173,7 +199,7 @@ public class NotesListViewImpl implements NotesListView {
 
 
     /**
-     * This is the standard support library way of implementing "swipe to delete" feature. You can do custom drawing in onChildDraw method
+     * This is the standard support library way of implementing "swipe to deleteNote" feature. You can do custom drawing in onChildDraw method
      * but whatever you draw will disappear once the swipe is over, and while the items are animating to their new position the recycler view
      * background will be visible. That is rarely an desired effect.
      */
@@ -219,7 +245,7 @@ public class NotesListViewImpl implements NotesListView {
                 if (undoOn) {
                     adapter.pendingRemoval(swipedPosition);
                 } else {
-                    adapter.removeItem(swipedPosition);
+                    adapter.delete(swipedPosition);
                 }
             }
 

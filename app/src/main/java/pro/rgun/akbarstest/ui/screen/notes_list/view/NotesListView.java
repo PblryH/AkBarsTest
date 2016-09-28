@@ -4,6 +4,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.List;
+
+import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.extras.architecture.BaseView;
 import pro.rgun.akbarstest.ui.screen.notes_list.presenter.NotesListPresenter;
@@ -45,6 +48,12 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
      * @param currentStorageType
      */
     void setCurrentStorageInfoInToolbarSubtitle(StorageType currentStorageType);
+
+    void fillNotes(List<Note> notes);
+
+    void showNoteDetailScreen();
+
+    void showNoteDetailScreen(String id);
 
     /**
      * Колбэк выбора хранилища

@@ -33,4 +33,14 @@ public interface NoteDetailView extends BaseView<NoteDetailPresenter> {
     void back();
 
     void showDeleteDialog();
+
+    void showSaveDialog();
+
+    String getTitle();
+
+    String getText();
+
+    void setTitle(String title);
+
+    void setText(String text);
 }

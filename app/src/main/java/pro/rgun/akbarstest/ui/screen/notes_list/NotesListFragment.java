@@ -35,7 +35,7 @@ public class NotesListFragment extends BaseRetainFragment<NotesListView> {
     @Override
     protected void initInjection() {
         NotesListComponent component = DaggerNotesListComponent.builder()
-                .notesListModule(new NotesListModule())
+                .notesListModule(new NotesListModule(getActivity()))
                 .build();
         component.inject(this);
     }

@@ -3,6 +3,7 @@ package pro.rgun.akbarstest.ui.screen.note_detail.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import butterknife.BindView;
@@ -38,7 +39,7 @@ public class NoteDetailVH extends VHContentWithToolbar {
     public class Note {
 
         @BindView(R.id.title)
-        View title;
+        EditText title;
 
         @BindView(R.id.editor)
         MyRichEditor editor;

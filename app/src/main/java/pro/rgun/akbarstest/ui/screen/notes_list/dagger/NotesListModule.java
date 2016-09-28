@@ -1,5 +1,7 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.dagger;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 
 import dagger.Module;
@@ -18,6 +20,12 @@ import pro.rgun.akbarstest.ui.screen.notes_list.view.NotesListViewImpl;
 @Module
 public class NotesListModule {
 
+    private Context mContext;
+
+    public NotesListModule(Context context) {
+        mContext = context;
+    }
+
     @PerActivity
     @Provides
     NotesListPresenter provideNotesListPresenter(NotesListView view, NotesListModel model){
@@ -28,7 +36,7 @@ public class NotesListModule {
     @Provides
     @Inject
     NotesListModel provideNotesListModel(){
-        return new NotesListModelImpl();
+        return new NotesListModelImpl(mContext);
     }
 
     @PerActivity

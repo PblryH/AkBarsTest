@@ -1,5 +1,7 @@
 package pro.rgun.akbarstest.ui.screen.note_detail.dagger;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 
 import dagger.Module;
@@ -18,6 +20,12 @@ import pro.rgun.akbarstest.ui.screen.note_detail.view.NoteDetailViewImpl;
 @Module
 public class NoteDetailModule {
 
+    private Context mContext;
+
+    public NoteDetailModule(Context context) {
+        mContext = context;
+    }
+
     @PerActivity
     @Provides
     NoteDetailPresenter provideNoteDetailPresenter(NoteDetailView view, NoteDetailModel model){
@@ -28,7 +36,7 @@ public class NoteDetailModule {
     @Provides
     @Inject
     NoteDetailModel provideNoteDetailModel(){
-        return new NoteDetailModelImpl();
+        return new NoteDetailModelImpl(mContext);
     }
 
     @PerActivity

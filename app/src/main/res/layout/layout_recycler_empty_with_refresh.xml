@@ -26,6 +26,30 @@
                 android:transcriptMode="alwaysScroll"
                 tools:listitem="@layout/list_item_notes_list"/>
 
+            <ScrollView
+                android:id="@+id/list_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:contentDescription="@string/empty"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:src="@drawable/ic_description_black_24dp"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/addNote"
                 android:layout_width="wrap_content"
@@ -38,30 +62,6 @@
                 app:layout_behavior="pro.rgun.akbarstest.ui.extras.tools.FABScrollBehavior"/>
 
         </android.support.design.widget.CoordinatorLayout>
-
-        <ScrollView
-            android:id="@+id/list_empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/linearLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:contentDescription="@string/empty"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:src="@drawable/ic_description_black_24dp"/>
-
-            </LinearLayout>
-
-        </ScrollView>
 
     </FrameLayout>
 

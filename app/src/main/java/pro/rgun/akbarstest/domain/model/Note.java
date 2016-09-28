@@ -19,9 +19,9 @@ public class Note {
      */
     private String text;
     /**
-     * Дата создания
+     * Таймстамп даты и времени создания
      */
-    private String date;
+    private long dateTimeTS;
 
     public String getId() {
         return id;
@@ -47,11 +47,11 @@ public class Note {
         this.text = text;
     }
 
-    public String getDate() {
-        return date;
+    public long getDateTimeTS() {
+        return dateTimeTS;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateTimeTS(long dateTimeTS) {
+        this.dateTimeTS = dateTimeTS;
     }
 }

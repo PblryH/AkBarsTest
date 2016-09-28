@@ -28,12 +28,13 @@ public class NotesListAdapter extends RecyclerViewAdapter<CheckListItemModel, No
 
 
     private List<CheckListItemModel> itemsPendingRemoval = new ArrayList<>();
-    private OnItemClickListener mItemClickListener;
+    private ItemClickListener mItemClickListener;
     private boolean mUndoOn;
 
 
     private Handler handler = new Handler(); // hanlder for running delayed runnables
     HashMap<CheckListItemModel, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
+    private DeleteListener mDeleteListener;
 
     public NotesListAdapter() {
         super(new ArrayList<CheckListItemModel>());
@@ -79,10 +80,6 @@ public class NotesListAdapter extends RecyclerViewAdapter<CheckListItemModel, No
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        mItemClickListener = onItemClickListener;
-    }
-
     public void setUndoOn(boolean undoOn) {
         mUndoOn = undoOn;
     }
@@ -101,7 +98,7 @@ public class NotesListAdapter extends RecyclerViewAdapter<CheckListItemModel, No
             Runnable pendingRemovalRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    removeItem(mDataList.indexOf(item));
+                    delete(mDataList.indexOf(item));
                 }
             };
             handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT);
@@ -109,12 +106,30 @@ public class NotesListAdapter extends RecyclerViewAdapter<CheckListItemModel, No
         }
     }
 
+    public void delete(int position){
+        CheckListItemModel item = mDataList.get(position);
+        removeItem(position);
+        mDeleteListener.onDelete(position, item);
+    }
+
     public boolean isPendingRemoval(int position) {
         return itemsPendingRemoval.contains(mDataList.get(position));
     }
 
-    public interface OnItemClickListener {
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
+
+    public void setDeleteListener(DeleteListener deleteListener) {
+        mDeleteListener = deleteListener;
+    }
+
+    public interface ItemClickListener {
         void onItemClick(View view, int position, CheckListItemModel model);
+    }
+
+    public interface DeleteListener {
+        void onDelete(int position, CheckListItemModel model);
     }
 
     ///////////////////////////////////////////////////////////////////////////

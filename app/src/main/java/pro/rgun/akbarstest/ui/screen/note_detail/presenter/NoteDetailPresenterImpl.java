@@ -1,5 +1,6 @@
 package pro.rgun.akbarstest.ui.screen.note_detail.presenter;
 
+import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.ui.screen.note_detail.model.NoteDetailModel;
 import pro.rgun.akbarstest.ui.screen.note_detail.view.NoteDetailView;
 
@@ -54,11 +55,33 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
     @Override
     public void onHomeClicked() {
-        mView.back();
+        mView.showSaveDialog();
     }
 
     @Override
     public void onMenuDeleteClicked() {
         mView.showDeleteDialog();
+    }
+
+    @Override
+    public void saveNote() {
+        Note note = mModel.getNote();
+        note.setTitle(mView.getTitle());
+        note.setText(mView.getText());
+        mModel.saveNote(note);
+        mView.back();
+    }
+
+    @Override
+    public void onInitViewComplete() {
+        Note note = mModel.getNote();
+        mView.setTitle(note.getTitle());
+        mView.setText(note.getText());
+    }
+
+    @Override
+    public void deleteNote() {
+        mModel.deleteNote();
+        mView.back();
     }
 }

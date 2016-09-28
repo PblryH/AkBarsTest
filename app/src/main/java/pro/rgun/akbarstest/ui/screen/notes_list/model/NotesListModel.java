@@ -1,5 +1,8 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.model;
 
+import java.util.List;
+
+import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 
 /**
@@ -11,4 +14,11 @@ public interface NotesListModel {
 
     void setCurrentStorageType(StorageType storageType);
 
+    void requestNotes(ResponseListener<List<Note>> listener);
+
+    void deleteNote(String id);
+
+    interface ResponseListener<T> {
+        void onGetResponse(T obj);
+    }
 }
