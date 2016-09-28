@@ -55,7 +55,18 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
     @Override
     public void onHomeClicked() {
-        mView.showSaveDialog();
+        Note note = mModel.getNote();
+        if(!note.getTitle().equals(mView.getTitle()) || !note.getText().equals(mView.getText())) {
+            if(mView.getTitle().isEmpty()){
+                mView.showEmptyTitleDialog();
+            }
+            else {
+                mView.showSaveDialog();
+            }
+        }
+        else {
+            mView.back();
+        }
     }
 
     @Override

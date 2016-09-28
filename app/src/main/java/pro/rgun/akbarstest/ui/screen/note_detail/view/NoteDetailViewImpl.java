@@ -160,6 +160,7 @@ public class NoteDetailViewImpl implements NoteDetailView {
                 .setTitle("Сохранить изменения")
                 .setPositiveButton("Да", (dialogInterface, i) -> mPresenter.saveNote())
                 .setNegativeButton("Нет", (dialogInterface, i) -> back())
+                .setNeutralButton("Отмена", null)
                 .create()
                 .show();
 
@@ -183,5 +184,14 @@ public class NoteDetailViewImpl implements NoteDetailView {
     @Override
     public void setText(String text) {
         vh.note.editor.setHtml(text);
+    }
+
+    @Override
+    public void showEmptyTitleDialog() {
+        new AlertDialog.Builder(mActivity)
+                .setTitle("Введите заголовок заметки")
+                .setPositiveButton("Ок", null)
+                .create()
+                .show();
     }
 }
