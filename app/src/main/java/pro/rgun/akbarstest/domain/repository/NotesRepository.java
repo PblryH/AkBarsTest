@@ -10,11 +10,9 @@ import pro.rgun.akbarstest.domain.model.Note;
 
 public interface NotesRepository {
 
-    void addNote(Note note);
-
     Note getNote(String id);
 
-    void saveNote(String id, Note note);
+    void saveNote(Note note);
 
     void deleteNote(String id);
 

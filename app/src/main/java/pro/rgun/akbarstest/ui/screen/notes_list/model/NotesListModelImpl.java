@@ -6,60 +6,40 @@ import java.util.List;
 
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
-import pro.rgun.akbarstest.domain.repository.NotesRepository;
-import pro.rgun.akbarstest.repository.shares_preferences.SharedPreferencesNotesRepository;
+import pro.rgun.akbarstest.domain.use_case.note.NotesCurrentRepository;
 
 /**
  * Created by rgun on 10.09.16.
  */
 public class NotesListModelImpl implements NotesListModel {
 
-    private StorageType mStorageType = StorageType.SHARED_PREFERENCES;
-    private Context mContext;
+    private final NotesCurrentRepository mNotesCurrentRepository;
 
     public NotesListModelImpl(Context context) {
-        mContext = context;
+        mNotesCurrentRepository = new NotesCurrentRepository(context);
     }
 
     @Override
     public StorageType getCurrentStorageType() {
-        return mStorageType;
+        return mNotesCurrentRepository.getCurrentStorageType();
     }
 
     @Override
     public void setCurrentStorageType(StorageType storageType) {
-        mStorageType = storageType;
+        mNotesCurrentRepository.setCurrentStorageType(storageType);
     }
 
     @Override
     public void requestNotes(ResponseListener<List<Note>> listener) {
-        List<Note> allNotes = getNotesRepository().getAllNotes();
-        listener.onGetResponse(allNotes);
+        List<Note> noteList = mNotesCurrentRepository.getNoteList();
+        listener.onGetResponse(noteList);
     }
 
     @Override
     public void deleteNote(String id) {
-        getNotesRepository().deleteNote(id);
+        mNotesCurrentRepository.deleteNote(id);
     }
 
-    private NotesRepository getNotesRepository(){
-
-        NotesRepository notesRepository;
-
-        switch (mStorageType){
-            case SHARED_PREFERENCES:
-                notesRepository = new SharedPreferencesNotesRepository(mContext);
-                break;
-            case SQLITE:
-            case FILE:
-            case VKWALL:
-            default:
-                throw new RuntimeException(
-                        String.format("Repository %s not yet implemented", mStorageType.name()));
-        }
-
-        return notesRepository;
-    }
 
 
 }

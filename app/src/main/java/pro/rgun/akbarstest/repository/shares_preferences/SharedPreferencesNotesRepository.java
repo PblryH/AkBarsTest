@@ -30,7 +30,7 @@ public class SharedPreferencesNotesRepository implements NotesRepository {
     }
 
     @Override
-    public void addNote(Note note) {
+    public void saveNote(Note note) {
         String jsonNote = mGson.toJson(note);
         SharedPreferences.Editor edit = pref.edit();
         edit.putString(note.getId(), jsonNote);
@@ -42,14 +42,6 @@ public class SharedPreferencesNotesRepository implements NotesRepository {
         String jsonNote = pref.getString(id, "");
         Note note = mGson.fromJson(jsonNote, Note.class);
         return note;
-    }
-
-    @Override
-    public void saveNote(String id, Note note) {
-        String jsonNote = mGson.toJson(note);
-        SharedPreferences.Editor edit = pref.edit();
-        edit.putString(note.getId(), jsonNote);
-        edit.apply();
     }
 
     @Override

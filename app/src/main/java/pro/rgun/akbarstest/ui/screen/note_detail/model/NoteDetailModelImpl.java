@@ -5,8 +5,7 @@ import android.content.Context;
 import java.util.UUID;
 
 import pro.rgun.akbarstest.domain.model.Note;
-import pro.rgun.akbarstest.domain.repository.NotesRepository;
-import pro.rgun.akbarstest.repository.shares_preferences.SharedPreferencesNotesRepository;
+import pro.rgun.akbarstest.domain.use_case.note.NotesCurrentRepository;
 
 /**
  * Created by rgun on 10.09.16.
@@ -15,16 +14,15 @@ public class NoteDetailModelImpl implements NoteDetailModel {
 
 
     private Note mNote;
-    private Context mContext;
+    private final NotesCurrentRepository mNotesCurrentRepository;
 
     public NoteDetailModelImpl(Context context) {
-        mContext = context;
+        mNotesCurrentRepository = new NotesCurrentRepository(context);
     }
 
     @Override
     public void initNote(String id) {
-        NotesRepository notesRepository = new SharedPreferencesNotesRepository(mContext);
-        mNote = notesRepository.getNote(id);
+        mNote = mNotesCurrentRepository.getNote(id);
         if(mNote == null){
             mNote = new Note();
             mNote.setId(UUID.randomUUID().toString());
@@ -41,13 +39,11 @@ public class NoteDetailModelImpl implements NoteDetailModel {
 
     @Override
     public void saveNote(Note note) {
-        NotesRepository notesRepository = new SharedPreferencesNotesRepository(mContext);
-        notesRepository.addNote(note);
+        mNotesCurrentRepository.saveNote(note);
     }
 
     @Override
     public void deleteNote() {
-        NotesRepository notesRepository = new SharedPreferencesNotesRepository(mContext);
-        notesRepository.deleteNote(mNote.getId());
+        mNotesCurrentRepository.deleteNote(mNote.getId());
     }
 }

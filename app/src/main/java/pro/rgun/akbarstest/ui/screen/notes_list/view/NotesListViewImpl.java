@@ -128,7 +128,7 @@ public class NotesListViewImpl implements
                     CheckListItemModel checkListItemModel = new CheckListItemModel();
                     checkListItemModel.id = note.getId();
                     checkListItemModel.title = note.getTitle();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy HH:mm");
                     checkListItemModel.createdDate = simpleDateFormat.format(new Date(note.getDateTimeTS()));
                     return checkListItemModel;
                 })

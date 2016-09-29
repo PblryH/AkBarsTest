@@ -13,7 +13,7 @@ public class SaveNote extends NoteUseCase {
         super(repository);
     }
 
-    public void saveNote(String id, Note note) {
-        mRepository.saveNote(id, note);
+    public void saveNote(Note note) {
+        mRepository.saveNote(note);
     }
 }

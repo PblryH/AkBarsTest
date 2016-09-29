@@ -1,5 +1,6 @@
 package pro.rgun.akbarstest.domain.use_case.note;
 
+import java.util.Collections;
 import java.util.List;
 
 import pro.rgun.akbarstest.domain.model.Note;
@@ -17,6 +18,12 @@ public class GetNoteList extends NoteUseCase{
     }
 
     public List<Note> getNoteList() {
-        return mRepository.getAllNotes();
+        List<Note> noteList = mRepository.getAllNotes();
+        Collections.sort(noteList, (note, note2) -> {
+            if(note.getDateTimeTS() < note2.getDateTimeTS()) return 1;
+            if(note.getDateTimeTS() > note2.getDateTimeTS()) return -1;
+            else return 0;
+        });
+        return noteList;
     }
 }
