@@ -134,7 +134,7 @@ public class NoteDetailViewImpl implements NoteDetailView {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            mPresenter.onHomeClicked();
+            mActivity.onBackPressed();
             return true;
         }
         if (id == R.id.delete) {
@@ -146,7 +146,7 @@ public class NoteDetailViewImpl implements NoteDetailView {
 
     @Override
     public void back() {
-        mActivity.onBackPressed();
+        mActivity.finish();
     }
 
     @Override

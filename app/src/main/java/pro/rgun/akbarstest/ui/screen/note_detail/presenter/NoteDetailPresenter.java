@@ -41,11 +41,6 @@ public interface NoteDetailPresenter {
     void onRedoClick();
 
     /**
-     * При нажатии на кнопку назад
-     */
-    void onHomeClicked();
-
-    /**
      * При нажатии на кнопку удаления заметки
      */
     void onMenuDeleteClicked();
@@ -55,4 +50,6 @@ public interface NoteDetailPresenter {
     void onInitViewComplete();
 
     void deleteNote();
+
+    void onBackPressed();
 }

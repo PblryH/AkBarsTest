@@ -54,21 +54,6 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
     }
 
     @Override
-    public void onHomeClicked() {
-        mModel.getNote(note -> {
-            if (!note.getTitle().equals(mView.getTitle()) || !note.getText().equals(mView.getText())) {
-                if (mView.getTitle().isEmpty()) {
-                    mView.showEmptyTitleDialog();
-                } else {
-                    mView.showSaveDialog();
-                }
-            } else {
-                mView.back();
-            }
-        });
-    }
-
-    @Override
     public void onMenuDeleteClicked() {
         mView.showDeleteDialog();
     }
@@ -94,5 +79,20 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
     @Override
     public void deleteNote() {
         mModel.deleteNote(obj -> mView.back());
+    }
+
+    @Override
+    public void onBackPressed() {
+        mModel.getNote(note -> {
+            if (!note.getTitle().equals(mView.getTitle()) || !note.getText().equals(mView.getText())) {
+                if (mView.getTitle().isEmpty()) {
+                    mView.showEmptyTitleDialog();
+                } else {
+                    mView.showSaveDialog();
+                }
+            } else {
+                mView.back();
+            }
+        });
     }
 }

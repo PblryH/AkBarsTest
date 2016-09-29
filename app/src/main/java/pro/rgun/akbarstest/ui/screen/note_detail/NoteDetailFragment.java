@@ -67,4 +67,8 @@ public class NoteDetailFragment extends BaseRetainFragment<NoteDetailView> {
         super.onPause();
         mView.onPause();
     }
+
+    public void onBackPressed() {
+        mPresenter.onBackPressed();
+    }
 }
