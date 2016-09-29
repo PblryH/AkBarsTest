@@ -6,7 +6,8 @@ import java.util.List;
 
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
-import pro.rgun.akbarstest.domain.use_case.note.NotesCurrentRepository;
+import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepository;
+import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepositoryImpl;
 
 /**
  * Created by rgun on 10.09.16.
@@ -16,7 +17,7 @@ public class NotesListModelImpl implements NotesListModel {
     private final NotesCurrentRepository mNotesCurrentRepository;
 
     public NotesListModelImpl(Context context) {
-        mNotesCurrentRepository = new NotesCurrentRepository(context);
+        mNotesCurrentRepository = new NotesCurrentRepositoryImpl(context);
     }
 
     @Override
@@ -30,17 +31,13 @@ public class NotesListModelImpl implements NotesListModel {
     }
 
     @Override
-    public void requestNotes(ResponseListener<List<Note>> listener) {
-        List<Note> noteList = mNotesCurrentRepository.getNoteList();
-        listener.onGetResponse(noteList);
+    public void getNotes(ResponseListener<List<Note>> listener) {
+        mNotesCurrentRepository.getNotes(listener::onGetResponse);
     }
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener) {
-        mNotesCurrentRepository.deleteNote(id);
-        listener.onGetResponse(null);
+        mNotesCurrentRepository.deleteNote(id,response -> listener.onGetResponse(null));
     }
-
-
 
 }

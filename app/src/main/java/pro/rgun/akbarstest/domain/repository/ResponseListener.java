@@ -1,4 +1,4 @@
-package pro.rgun.akbarstest.ui.screen.notes_list.model;
+package pro.rgun.akbarstest.domain.repository;
 
 /**
  * Created by rgun on 29.09.16.

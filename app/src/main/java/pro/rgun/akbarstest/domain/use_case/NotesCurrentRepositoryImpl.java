@@ -1,4 +1,4 @@
-package pro.rgun.akbarstest.domain.use_case.note;
+package pro.rgun.akbarstest.domain.use_case;
 
 import android.content.Context;
 
@@ -7,19 +7,20 @@ import java.util.List;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.domain.repository.NotesRepository;
+import pro.rgun.akbarstest.domain.repository.ResponseListener;
 import pro.rgun.akbarstest.repository.shares_preferences.SharedPreferencesNotesRepository;
 
 /**
  * Created by rgun on 29.09.16.
  */
 
-public class NotesCurrentRepository {
+public class NotesCurrentRepositoryImpl implements NotesCurrentRepository {
 
     private StorageType mStorageType = StorageType.SHARED_PREFERENCES;
 
     private Context mContext;
 
-    public NotesCurrentRepository(Context context) {
+    public NotesCurrentRepositoryImpl(Context context) {
         mContext = context;
     }
 
@@ -31,16 +32,24 @@ public class NotesCurrentRepository {
         mStorageType = currentStorageType;
     }
 
-    public List<Note> getNoteList() {
-        return new GetNoteList(getNotesRepository()).getNoteList();
+    @Override
+    public void getNotes(ResponseListener<List<Note>> listener) {
+        getNotesRepository().getAllNotes(listener);
     }
 
-    public Note getNote(String id) {
-        return new GetNote(getNotesRepository()).getNote(id);
+    @Override
+    public void getNote(String id, ResponseListener<Note> listener) {
+        getNotesRepository().getNote(id, listener);
     }
 
-    public void deleteNote(String id) {
-        new DeleteNote(getNotesRepository()).deleteNote(id);
+    @Override
+    public void saveNote(Note note, ResponseListener<Void> listener) {
+        getNotesRepository().saveNote(note, listener);
+    }
+
+    @Override
+    public void deleteNote(String id, ResponseListener<Void> listener) {
+        getNotesRepository().deleteNote(id, listener);
     }
 
     private NotesRepository getNotesRepository(){
@@ -62,7 +71,4 @@ public class NotesCurrentRepository {
         return notesRepository;
     }
 
-    public void saveNote(Note note) {
-        new SaveNote(getNotesRepository()).saveNote(note);
-    }
 }

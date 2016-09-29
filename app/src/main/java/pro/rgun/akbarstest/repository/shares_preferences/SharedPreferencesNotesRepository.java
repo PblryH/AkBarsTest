@@ -15,6 +15,7 @@ import java.util.Map;
 
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.repository.NotesRepository;
+import pro.rgun.akbarstest.domain.repository.ResponseListener;
 
 /**
  * Created by rgun on 28.09.16.
@@ -30,29 +31,31 @@ public class SharedPreferencesNotesRepository implements NotesRepository {
     }
 
     @Override
-    public void saveNote(Note note) {
+    public void saveNote(Note note, ResponseListener<Void> listener) {
         String jsonNote = mGson.toJson(note);
         SharedPreferences.Editor edit = pref.edit();
         edit.putString(note.getId(), jsonNote);
         edit.apply();
+        listener.onGetResponse(null);
     }
 
     @Override
-    public Note getNote(String id) {
+    public void getNote(String id, ResponseListener<Note> listener) {
         String jsonNote = pref.getString(id, "");
         Note note = mGson.fromJson(jsonNote, Note.class);
-        return note;
+        listener.onGetResponse(note);
     }
 
     @Override
-    public void deleteNote(String id) {
+    public void deleteNote(String id, ResponseListener<Void> listener) {
         SharedPreferences.Editor edit = pref.edit();
         edit.remove(id);
         edit.apply();
+        listener.onGetResponse(null);
     }
 
     @Override
-    public List<Note> getAllNotes() {
+    public void getAllNotes(ResponseListener<List<Note>> listener) {
         ArrayList<Note> notes = new ArrayList<>();
         Map<String, ?> all = pref.getAll();
         Collection<?> values = all.values();
@@ -67,6 +70,6 @@ public class SharedPreferencesNotesRepository implements NotesRepository {
                 }
             }
         }
-        return notes;
+        listener.onGetResponse(notes);
     }
 }

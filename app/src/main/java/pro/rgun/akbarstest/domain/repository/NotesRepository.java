@@ -10,11 +10,12 @@ import pro.rgun.akbarstest.domain.model.Note;
 
 public interface NotesRepository {
 
-    Note getNote(String id);
+    void getNote(String id, ResponseListener<Note> listener);
 
-    void saveNote(Note note);
+    void saveNote(Note note, ResponseListener<Void> listener);
 
-    void deleteNote(String id);
+    void deleteNote(String id, ResponseListener<Void> listener);
 
-    List<Note> getAllNotes();
+    void getAllNotes(ResponseListener<List<Note>> listener);
+
 }

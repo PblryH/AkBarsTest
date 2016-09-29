@@ -5,7 +5,8 @@ import android.content.Context;
 import java.util.UUID;
 
 import pro.rgun.akbarstest.domain.model.Note;
-import pro.rgun.akbarstest.domain.use_case.note.NotesCurrentRepository;
+import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepository;
+import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepositoryImpl;
 import pro.rgun.akbarstest.ui.screen.notes_list.model.ResponseListener;
 
 /**
@@ -14,23 +15,26 @@ import pro.rgun.akbarstest.ui.screen.notes_list.model.ResponseListener;
 public class NoteDetailModelImpl implements NoteDetailModel {
 
 
-    private Note mNote;
     private final NotesCurrentRepository mNotesCurrentRepository;
+    private Note mNote;
 
     public NoteDetailModelImpl(Context context) {
-        mNotesCurrentRepository = new NotesCurrentRepository(context);
+        mNotesCurrentRepository = new NotesCurrentRepositoryImpl(context);
     }
 
     @Override
     public void initNote(String id) {
-        mNote = mNotesCurrentRepository.getNote(id);
-        if(mNote == null){
-            mNote = new Note();
-            mNote.setId(UUID.randomUUID().toString());
-            mNote.setDateTimeTS(System.currentTimeMillis());
-            this.mNote.setTitle("");
-            this.mNote.setText("");
-        }
+        mNotesCurrentRepository.getNote(id, note -> {
+                    mNote = note;
+                    if (mNote == null) {
+                        mNote = new Note();
+                        mNote.setId(UUID.randomUUID().toString());
+                        mNote.setDateTimeTS(System.currentTimeMillis());
+                        this.mNote.setTitle("");
+                        this.mNote.setText("");
+                    }
+                }
+        );
     }
 
     @Override
@@ -40,13 +44,11 @@ public class NoteDetailModelImpl implements NoteDetailModel {
 
     @Override
     public void saveNote(Note note, ResponseListener<Void> listener) {
-        mNotesCurrentRepository.saveNote(note);
-        listener.onGetResponse(null);
+        mNotesCurrentRepository.saveNote(note, response -> listener.onGetResponse(null));
     }
 
     @Override
     public void deleteNote(ResponseListener<Void> listener) {
-        mNotesCurrentRepository.deleteNote(mNote.getId());
-        listener.onGetResponse(null);
+        mNotesCurrentRepository.deleteNote(mNote.getId(), response -> listener.onGetResponse(null));
     }
 }
