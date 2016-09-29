@@ -16,9 +16,6 @@ public interface NotesListModel {
 
     void requestNotes(ResponseListener<List<Note>> listener);
 
-    void deleteNote(String id);
+    void deleteNote(String id, ResponseListener<Void> listener);
 
-    interface ResponseListener<T> {
-        void onGetResponse(T obj);
-    }
 }

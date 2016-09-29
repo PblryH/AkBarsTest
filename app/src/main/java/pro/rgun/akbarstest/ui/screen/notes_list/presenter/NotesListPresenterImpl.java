@@ -2,6 +2,7 @@ package pro.rgun.akbarstest.ui.screen.notes_list.presenter;
 
 import pro.rgun.akbarstest.ui.screen.notes_list.model.NotesListModel;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.NotesListView;
+import timber.log.Timber;
 
 /**
  * Created by rgun on 10.09.16.
@@ -44,7 +45,7 @@ public class NotesListPresenterImpl implements NotesListPresenter {
 
     @Override
     public void onItemDelete(String id) {
-        mModel.deleteNote(id);
+        mModel.deleteNote(id, obj -> Timber.d("Note was deleted"));
     }
 
     @Override

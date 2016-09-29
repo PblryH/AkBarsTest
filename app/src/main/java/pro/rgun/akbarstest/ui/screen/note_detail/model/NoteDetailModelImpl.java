@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.use_case.note.NotesCurrentRepository;
+import pro.rgun.akbarstest.ui.screen.notes_list.model.ResponseListener;
 
 /**
  * Created by rgun on 10.09.16.
@@ -33,17 +34,19 @@ public class NoteDetailModelImpl implements NoteDetailModel {
     }
 
     @Override
-    public Note getNote() {
-        return mNote;
+    public void getNote(ResponseListener<Note> listener) {
+        listener.onGetResponse(mNote);
     }
 
     @Override
-    public void saveNote(Note note) {
+    public void saveNote(Note note, ResponseListener<Void> listener) {
         mNotesCurrentRepository.saveNote(note);
+        listener.onGetResponse(null);
     }
 
     @Override
-    public void deleteNote() {
+    public void deleteNote(ResponseListener<Void> listener) {
         mNotesCurrentRepository.deleteNote(mNote.getId());
+        listener.onGetResponse(null);
     }
 }

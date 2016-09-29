@@ -36,8 +36,9 @@ public class NotesListModelImpl implements NotesListModel {
     }
 
     @Override
-    public void deleteNote(String id) {
+    public void deleteNote(String id, ResponseListener<Void> listener) {
         mNotesCurrentRepository.deleteNote(id);
+        listener.onGetResponse(null);
     }
 
 

@@ -1,8 +1,8 @@
 package pro.rgun.akbarstest.ui.screen.note_detail.presenter;
 
-import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.ui.screen.note_detail.model.NoteDetailModel;
 import pro.rgun.akbarstest.ui.screen.note_detail.view.NoteDetailView;
+import timber.log.Timber;
 
 /**
  * Created by rgun on 10.09.16.
@@ -55,18 +55,17 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
     @Override
     public void onHomeClicked() {
-        Note note = mModel.getNote();
-        if(!note.getTitle().equals(mView.getTitle()) || !note.getText().equals(mView.getText())) {
-            if(mView.getTitle().isEmpty()){
-                mView.showEmptyTitleDialog();
+        mModel.getNote(note -> {
+            if (!note.getTitle().equals(mView.getTitle()) || !note.getText().equals(mView.getText())) {
+                if (mView.getTitle().isEmpty()) {
+                    mView.showEmptyTitleDialog();
+                } else {
+                    mView.showSaveDialog();
+                }
+            } else {
+                mView.back();
             }
-            else {
-                mView.showSaveDialog();
-            }
-        }
-        else {
-            mView.back();
-        }
+        });
     }
 
     @Override
@@ -76,23 +75,24 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
     @Override
     public void saveNote() {
-        Note note = mModel.getNote();
-        note.setTitle(mView.getTitle());
-        note.setText(mView.getText());
-        mModel.saveNote(note);
-        mView.back();
+        mModel.getNote(note -> {
+            note.setTitle(mView.getTitle());
+            note.setText(mView.getText());
+            mModel.saveNote(note,obj -> Timber.d("Note was saved"));
+            mView.back();
+        });
     }
 
     @Override
     public void onInitViewComplete() {
-        Note note = mModel.getNote();
-        mView.setTitle(note.getTitle());
-        mView.setText(note.getText());
+        mModel.getNote(note -> {
+            mView.setTitle(note.getTitle());
+            mView.setText(note.getText());
+        });
     }
 
     @Override
     public void deleteNote() {
-        mModel.deleteNote();
-        mView.back();
+        mModel.deleteNote(obj -> mView.back());
     }
 }
