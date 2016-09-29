@@ -62,4 +62,9 @@ public class NoteDetailFragment extends BaseRetainFragment<NoteDetailView> {
         return mView.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mView.onPause();
+    }
 }

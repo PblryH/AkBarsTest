@@ -45,4 +45,6 @@ public interface NoteDetailView extends BaseView<NoteDetailPresenter> {
     void setText(String text);
 
     void showEmptyTitleDialog();
+
+    void onPause();
 }

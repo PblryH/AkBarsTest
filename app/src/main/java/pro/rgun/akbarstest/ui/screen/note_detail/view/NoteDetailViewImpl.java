@@ -23,6 +23,8 @@ public class NoteDetailViewImpl implements NoteDetailView {
     private NoteDetailPresenter mPresenter;
     private AppCompatActivity mActivity;
     private NoteDetailVH vh;
+    private boolean isFirst = true;
+    private String mText = "";
 
     @Override
     public void setPresenter(NoteDetailPresenter presenter) {
@@ -45,7 +47,10 @@ public class NoteDetailViewImpl implements NoteDetailView {
         initToolbar();
         initEditor();
         initRichTextPanel();
-        mPresenter.onInitViewComplete();
+        if(isFirst) {
+            mPresenter.onInitViewComplete();
+            isFirst = false;
+        }
     }
 
     private void initToolbar() {
@@ -60,7 +65,6 @@ public class NoteDetailViewImpl implements NoteDetailView {
     }
 
 
-
     ///////////////////////////////////////////////////////////////////////////
     // RichText
     ///////////////////////////////////////////////////////////////////////////
@@ -68,7 +72,7 @@ public class NoteDetailViewImpl implements NoteDetailView {
     private void initEditor() {
         vh.note.editor.setPlaceholder("Текст заметки ...");
         vh.note.editor.setHideKeyboardListener(() -> vh.note.noteContent.requestFocus());
-        vh.note.editor.setHtml("");
+        vh.note.editor.setHtml(mText);
     }
 
     private void initRichTextPanel() {
@@ -172,18 +176,19 @@ public class NoteDetailViewImpl implements NoteDetailView {
     }
 
     @Override
-    public String getText() {
-        return vh.note.editor.getHtml();
-    }
-
-    @Override
     public void setTitle(String title) {
         vh.note.title.setText(title);
     }
 
     @Override
+    public String getText() {
+        return vh.note.editor.getHtml();
+    }
+
+    @Override
     public void setText(String text) {
         vh.note.editor.setHtml(text);
+        mText = text;
     }
 
     @Override
@@ -193,5 +198,10 @@ public class NoteDetailViewImpl implements NoteDetailView {
                 .setPositiveButton("Ок", null)
                 .create()
                 .show();
+    }
+
+    @Override
+    public void onPause() {
+        mText = getText();
     }
 }
