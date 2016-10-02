@@ -1,6 +1,7 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.model;
 
 import java.util.List;
+import java.util.Observer;
 
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
@@ -17,5 +18,7 @@ public interface NotesListModel {
     void getNotes(ResponseListener<List<Note>> listener);
 
     void deleteNote(String id, ResponseListener<Void> listener);
+
+    void subscribeToNotesUpdate(Observer observer);
 
 }

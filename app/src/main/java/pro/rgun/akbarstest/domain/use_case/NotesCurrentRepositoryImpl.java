@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
@@ -16,7 +18,7 @@ import pro.rgun.akbarstest.repository.sqlite.SQLiteNotesRepository;
  * Created by rgun on 29.09.16.
  */
 
-public class NotesCurrentRepositoryImpl implements NotesCurrentRepository {
+public class NotesCurrentRepositoryImpl extends Observable implements NotesCurrentRepository {
 
 
     private Context mContext;
@@ -53,11 +55,22 @@ public class NotesCurrentRepositoryImpl implements NotesCurrentRepository {
     @Override
     public void saveNote(Note note, ResponseListener<Void> listener) {
         getNotesRepository().saveNote(note, listener);
+        setChanged();
+        notifyObservers();
     }
 
     @Override
-    public void deleteNote(String id, ResponseListener<Void> listener) {
+    public void deleteNote(String id, ResponseListener<Void> listener, boolean isNeedUpdate) {
         getNotesRepository().deleteNote(id, listener);
+        if(isNeedUpdate) {
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    @Override
+    public void subscribeToNotesUpdate(Observer observer) {
+        addObserver(observer);
     }
 
     private NotesRepository getNotesRepository(){

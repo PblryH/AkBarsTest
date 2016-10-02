@@ -3,11 +3,12 @@ package pro.rgun.akbarstest.ui.screen.notes_list.model;
 import android.content.Context;
 
 import java.util.List;
+import java.util.Observer;
 
+import pro.rgun.akbarstest.Application;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepository;
-import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepositoryImpl;
 
 /**
  * Created by rgun on 10.09.16.
@@ -17,7 +18,7 @@ public class NotesListModelImpl implements NotesListModel {
     private final NotesCurrentRepository mNotesCurrentRepository;
 
     public NotesListModelImpl(Context context) {
-        mNotesCurrentRepository = new NotesCurrentRepositoryImpl(context);
+        mNotesCurrentRepository = ((Application) context.getApplicationContext()).getNotesCurrentRepository();
     }
 
     @Override
@@ -37,7 +38,12 @@ public class NotesListModelImpl implements NotesListModel {
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener) {
-        mNotesCurrentRepository.deleteNote(id,response -> listener.onGetResponse(null));
+        mNotesCurrentRepository.deleteNote(id,response -> listener.onGetResponse(null),false);
+    }
+
+    @Override
+    public void subscribeToNotesUpdate(Observer observer) {
+        mNotesCurrentRepository.subscribeToNotesUpdate(observer);
     }
 
 }

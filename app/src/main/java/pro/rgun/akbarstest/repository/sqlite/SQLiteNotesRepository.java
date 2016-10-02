@@ -111,7 +111,6 @@ public class SQLiteNotesRepository implements NotesRepository {
         listener.onGetResponse(notes);
     }
 
-
     class DBHelper extends SQLiteOpenHelper {
 
         public static final int VERSION = 1;

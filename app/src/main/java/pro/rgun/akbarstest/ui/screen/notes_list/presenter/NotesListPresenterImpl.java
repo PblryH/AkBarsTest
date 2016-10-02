@@ -1,5 +1,8 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.presenter;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import pro.rgun.akbarstest.ui.screen.notes_list.model.NotesListModel;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.NotesListView;
 import timber.log.Timber;
@@ -7,7 +10,7 @@ import timber.log.Timber;
 /**
  * Created by rgun on 10.09.16.
  */
-public class NotesListPresenterImpl implements NotesListPresenter {
+public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
     private final NotesListView mView;
     private final NotesListModel mModel;
@@ -23,14 +26,15 @@ public class NotesListPresenterImpl implements NotesListPresenter {
         mView.showChooseStorageDialog(mModel.getCurrentStorageType(), (storageType) -> {
             mModel.setCurrentStorageType(storageType);
             mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
-            mModel.getNotes(notes -> mView.fillNotes(notes));
+            mModel.getNotes(mView::fillNotes);
         });
     }
 
     @Override
     public void onInitViewComplete() {
         mView.setCurrentStorageInfoInToolbarSubtitle(mModel.getCurrentStorageType());
-        mModel.getNotes(notes -> mView.fillNotes(notes));
+        mModel.getNotes(mView::fillNotes);
+        mModel.subscribeToNotesUpdate(this);
     }
 
     @Override
@@ -50,6 +54,12 @@ public class NotesListPresenterImpl implements NotesListPresenter {
 
     @Override
     public void onPullToRefresh() {
-        mModel.getNotes(notes -> mView.fillNotes(notes));
+        mModel.getNotes(mView::fillNotes);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        Timber.d("update");
+        mModel.getNotes(mView::fillNotes);
     }
 }

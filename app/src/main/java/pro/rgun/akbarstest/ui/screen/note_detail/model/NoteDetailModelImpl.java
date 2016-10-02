@@ -4,9 +4,9 @@ import android.content.Context;
 
 import java.util.UUID;
 
+import pro.rgun.akbarstest.Application;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepository;
-import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepositoryImpl;
 import pro.rgun.akbarstest.ui.screen.notes_list.model.ResponseListener;
 
 /**
@@ -19,7 +19,7 @@ public class NoteDetailModelImpl implements NoteDetailModel {
     private Note mNote;
 
     public NoteDetailModelImpl(Context context) {
-        mNotesCurrentRepository = new NotesCurrentRepositoryImpl(context);
+        mNotesCurrentRepository = ((Application) context.getApplicationContext()).getNotesCurrentRepository();
     }
 
     @Override
@@ -49,6 +49,6 @@ public class NoteDetailModelImpl implements NoteDetailModel {
 
     @Override
     public void deleteNote(ResponseListener<Void> listener) {
-        mNotesCurrentRepository.deleteNote(mNote.getId(), response -> listener.onGetResponse(null));
+        mNotesCurrentRepository.deleteNote(mNote.getId(), response -> listener.onGetResponse(null), true);
     }
 }

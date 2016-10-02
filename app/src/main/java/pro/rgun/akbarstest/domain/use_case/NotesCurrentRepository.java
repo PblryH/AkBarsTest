@@ -1,6 +1,7 @@
 package pro.rgun.akbarstest.domain.use_case;
 
 import java.util.List;
+import java.util.Observer;
 
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
@@ -21,6 +22,7 @@ public interface NotesCurrentRepository {
 
     void saveNote(Note note, ResponseListener<Void> listener);
 
-    void deleteNote(String id, ResponseListener<Void> listener);
+    void deleteNote(String id, ResponseListener<Void> listener, boolean isNeedUpdate);
 
+    void subscribeToNotesUpdate(Observer observer);
 }

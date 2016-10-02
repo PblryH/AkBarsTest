@@ -21,7 +21,7 @@ import pro.rgun.akbarstest.domain.repository.ResponseListener;
  * Created by rgun on 28.09.16.
  */
 
-public class SharedPreferencesNotesRepository implements NotesRepository {
+public class SharedPreferencesNotesRepository    implements NotesRepository {
 
     private Gson mGson = new GsonBuilder().create();
     private SharedPreferences pref;
@@ -72,4 +72,5 @@ public class SharedPreferencesNotesRepository implements NotesRepository {
         }
         listener.onGetResponse(notes);
     }
+
 }
