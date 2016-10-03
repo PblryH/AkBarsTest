@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="pro.rgun.akbarstest">
 
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -18,6 +21,12 @@
         </activity>
         <activity android:name=".ui.screen.note_detail.NoteDetailActivity">
         </activity>
+        <receiver android:name=".sms.SmsReceiver">
+            <intent-filter android:priority="100">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+        <service android:name=".sms.SmsService"/>
     </application>
 
 </manifest>

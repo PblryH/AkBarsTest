@@ -54,7 +54,10 @@ public class SQLiteNotesRepository implements NotesRepository {
             Timber.d("0 rows");
         }
         c.close();
-        listener.onGetResponse(note);
+
+        if (listener != null) {
+            listener.onGetResponse(note);
+        }
     }
 
     @Override
@@ -75,14 +78,19 @@ public class SQLiteNotesRepository implements NotesRepository {
             Timber.d("row inserted, ID = %d",rowID);
         });
 
-        listener.onGetResponse(null);
+        if (listener != null) {
+            listener.onGetResponse(null);
+        }
     }
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(TABLE, COL_UUID + "=?", new String[]{id});
-        listener.onGetResponse(null);
+
+        if (listener != null) {
+            listener.onGetResponse(null);
+        }
     }
 
     @Override
@@ -108,7 +116,10 @@ public class SQLiteNotesRepository implements NotesRepository {
             Timber.d("0 rows");
         }
         c.close();
-        listener.onGetResponse(notes);
+
+        if (listener != null) {
+            listener.onGetResponse(notes);
+        }
     }
 
     class DBHelper extends SQLiteOpenHelper {

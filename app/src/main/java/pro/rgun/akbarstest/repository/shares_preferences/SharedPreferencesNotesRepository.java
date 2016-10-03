@@ -36,14 +36,18 @@ public class SharedPreferencesNotesRepository    implements NotesRepository {
         SharedPreferences.Editor edit = pref.edit();
         edit.putString(note.getId(), jsonNote);
         edit.apply();
-        listener.onGetResponse(null);
+        if (listener != null) {
+            listener.onGetResponse(null);
+        }
     }
 
     @Override
     public void getNote(String id, ResponseListener<Note> listener) {
         String jsonNote = pref.getString(id, "");
         Note note = mGson.fromJson(jsonNote, Note.class);
-        listener.onGetResponse(note);
+        if (listener != null) {
+            listener.onGetResponse(note);
+        }
     }
 
     @Override
@@ -51,7 +55,9 @@ public class SharedPreferencesNotesRepository    implements NotesRepository {
         SharedPreferences.Editor edit = pref.edit();
         edit.remove(id);
         edit.apply();
-        listener.onGetResponse(null);
+        if (listener != null) {
+            listener.onGetResponse(null);
+        }
     }
 
     @Override
@@ -70,7 +76,9 @@ public class SharedPreferencesNotesRepository    implements NotesRepository {
                 }
             }
         }
-        listener.onGetResponse(notes);
+        if (listener != null) {
+            listener.onGetResponse(notes);
+        }
     }
 
 }
