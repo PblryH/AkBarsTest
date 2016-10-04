@@ -60,4 +60,15 @@ public class NotesListFragment extends BaseRetainFragment<NotesListView> {
         return mView.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mView.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mView.onResume();
+    }
 }

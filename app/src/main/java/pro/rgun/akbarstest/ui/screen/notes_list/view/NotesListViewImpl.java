@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import pro.rgun.akbarstest.Application;
 import pro.rgun.akbarstest.R;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
@@ -95,6 +96,16 @@ public class NotesListViewImpl implements
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onPause() {
+        ((Application) mActivity.getApplication()).setIsCurrentScreenNotesList(false);
+    }
+
+    @Override
+    public void onResume() {
+        ((Application) mActivity.getApplication()).setIsCurrentScreenNotesList(true);
     }
 
     @Override

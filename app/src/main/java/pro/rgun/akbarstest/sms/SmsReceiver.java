@@ -36,8 +36,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 
             Intent mIntent = new Intent(context, SmsService.class);
-            mIntent.putExtra("sms_from", smsFrom);
-            mIntent.putExtra("sms_body", smsBody);
+            mIntent.putExtra(SmsService.SMS_FROM, smsFrom);
+            mIntent.putExtra(SmsService.SMS_BODY, smsBody);
             context.startService(mIntent);
 
             abortBroadcast();

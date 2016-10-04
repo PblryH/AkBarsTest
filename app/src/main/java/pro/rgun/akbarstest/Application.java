@@ -10,6 +10,7 @@ import timber.log.Timber;
 public class Application extends android.app.Application {
 
     private NotesCurrentRepository mNotesCurrentRepository;
+    private boolean mIsCurrentScreenNotesList;
 
     @Override
     public void onCreate() {
@@ -31,6 +32,14 @@ public class Application extends android.app.Application {
 
     public NotesCurrentRepository getNotesCurrentRepository(){
         return mNotesCurrentRepository;
+    }
+
+    public void setIsCurrentScreenNotesList(boolean isCurrentScreenNotesList){
+        mIsCurrentScreenNotesList = isCurrentScreenNotesList;
+    }
+
+    public boolean isCurrentScreenNotesList(){
+        return mIsCurrentScreenNotesList;
     }
 
 }

@@ -31,6 +31,11 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
      */
     boolean onOptionsItemSelected(MenuItem item);
 
+
+    void onPause();
+
+    void onResume();
+
     /**
      * Показать тоаст
      * @param message сообщение

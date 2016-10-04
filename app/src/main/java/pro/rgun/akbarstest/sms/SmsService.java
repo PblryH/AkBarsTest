@@ -13,14 +13,20 @@ import java.util.UUID;
 import pro.rgun.akbarstest.Application;
 import pro.rgun.akbarstest.R;
 import pro.rgun.akbarstest.domain.model.Note;
+import pro.rgun.akbarstest.domain.repository.NotesRepository;
 import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepository;
+import pro.rgun.akbarstest.repository.sqlite.SQLiteNotesRepository;
 import pro.rgun.akbarstest.ui.screen.notes_list.NotesListActivity;
+import timber.log.Timber;
 
 /**
  * Created by rgun on 03.10.16.
  */
 
 public class SmsService extends Service {
+
+    public static final String SMS_FROM = "sms_from";
+    public static final String SMS_BODY = "sms_body";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -29,19 +35,10 @@ public class SmsService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String smsFrom = intent.getExtras().getString("sms_from");
-        String smsBody = intent.getExtras().getString("sms_body");
+        String smsFrom = intent.getExtras().getString(SMS_FROM);
+        String smsBody = intent.getExtras().getString(SMS_BODY);
         showNotification(smsFrom,smsBody);
-
-        NotesCurrentRepository mNotesCurrentRepository = ((Application) this.getApplicationContext()).getNotesCurrentRepository();
-
-        Note mNote = new Note();
-        mNote.setId(UUID.randomUUID().toString());
-        mNote.setDateTimeTS(System.currentTimeMillis());
-        mNote.setTitle(smsFrom);
-        mNote.setText(smsBody);
-        mNotesCurrentRepository.saveNote(mNote, null);
-
+        saveSmsToStorage(smsFrom,smsBody);
         return START_STICKY;
     }
 
@@ -57,5 +54,28 @@ public class SmsService extends Service {
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.getNotification();
         notificationManager.notify(R.mipmap.ic_launcher, notification);
+    }
+
+    private void saveSmsToStorage(String smsFrom, String smsBody){
+        Note note = createNote(smsFrom, smsBody);
+        boolean isCurrentScreenNotesList = ((Application) this.getApplication()).isCurrentScreenNotesList();
+        Timber.d("isCurrentScreenNotesList = %s", isCurrentScreenNotesList);
+        if(isCurrentScreenNotesList) {
+            NotesCurrentRepository notesCurrentRepository = ((Application) this.getApplicationContext()).getNotesCurrentRepository();
+            notesCurrentRepository.saveNote(note, null);
+        }
+        else {
+            NotesRepository notesRepository = new SQLiteNotesRepository(this);
+            notesRepository.saveNote(note, null);
+        }
+    }
+
+    private Note createNote(String smsFrom, String smsBody){
+        Note note = new Note();
+        note.setId(UUID.randomUUID().toString());
+        note.setDateTimeTS(System.currentTimeMillis());
+        note.setTitle(smsFrom);
+        note.setText(smsBody);
+        return note;
     }
 }
