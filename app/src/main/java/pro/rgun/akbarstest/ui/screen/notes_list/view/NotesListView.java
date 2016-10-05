@@ -36,6 +36,8 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
 
     void onResume();
 
+    void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults);
+
     /**
      * Показать тоаст
      * @param message сообщение
