@@ -1,5 +1,7 @@
 <resources>
+    <integer name="com_vk_sdk_AppId">5656251</integer>
     <string name="app_name">AkBarsTest</string>
     <string name="empty">Empty</string>
     <string name="button_undo">undo</string>
+    <string name="action_sign_in_short">Войти с помощью VK</string>
 </resources>

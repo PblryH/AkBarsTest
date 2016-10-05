@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Application"
@@ -27,6 +30,30 @@
             </intent-filter>
         </receiver>
         <service android:name=".sms.SmsService"/>
+        <activity
+            android:name=".ui.screen.auth.AuthActivity"
+            android:configChanges="keyboardHidden|orientation|layoutDirection"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateVisible">
+            <intent-filter>
+                <data android:scheme="vk3974615"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.vk.sdk.VKOpenAuthActivity"
+            android:configChanges="keyboardHidden|orientation|layoutDirection"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.vk.sdk.VKServiceActivity"
+            android:configChanges="keyboardHidden|orientation|layoutDirection"
+            android:label="ServiceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/VK.Transparent"/>
     </application>
 
 </manifest>

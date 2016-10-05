@@ -58,6 +58,7 @@ dependencies {
     compile 'com.reyurnible.rxanimation:rxanimations:1.0.0'
     compile 'com.jakewharton.timber:timber:4.1.1'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.vk:androidsdk:1.6.5'
 
 
     testCompile 'junit:junit:4.12'

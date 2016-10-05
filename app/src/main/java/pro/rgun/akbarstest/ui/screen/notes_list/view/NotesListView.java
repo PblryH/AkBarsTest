@@ -62,6 +62,8 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
 
     void showNoteDetailScreen(String id);
 
+    void openVkAuthScreen();
+
     /**
      * Колбэк выбора хранилища
      */

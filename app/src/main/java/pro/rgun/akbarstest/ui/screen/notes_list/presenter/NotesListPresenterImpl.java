@@ -1,8 +1,11 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.presenter;
 
+import com.vk.sdk.VKSdk;
+
 import java.util.Observable;
 import java.util.Observer;
 
+import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.screen.notes_list.model.NotesListModel;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.NotesListView;
 import timber.log.Timber;
@@ -24,6 +27,10 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
     @Override
     public void onMenuChooseStorageClicked() {
         mView.showChooseStorageDialog(mModel.getCurrentStorageType(), (storageType) -> {
+            if(storageType == StorageType.VKWALL && !VKSdk.isLoggedIn()){
+                mView.openVkAuthScreen();
+                return;
+            }
             mModel.setCurrentStorageType(storageType);
             mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
             mModel.getNotes(mView::fillNotes);

@@ -35,6 +35,7 @@ import pro.rgun.akbarstest.R;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.extras.recycler.DividerItemDecoration;
+import pro.rgun.akbarstest.ui.screen.auth.AuthActivity;
 import pro.rgun.akbarstest.ui.screen.note_detail.NoteDetailActivity;
 import pro.rgun.akbarstest.ui.screen.notes_list.NotesListActivity;
 import pro.rgun.akbarstest.ui.screen.notes_list.presenter.NotesListPresenter;
@@ -207,6 +208,12 @@ public class NotesListViewImpl implements
     public void showNoteDetailScreen(String id) {
         Intent intent = new Intent(mActivity, NoteDetailActivity.class);
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE_ID, id);
+        mActivity.startActivity(intent);
+    }
+
+    @Override
+    public void openVkAuthScreen() {
+        Intent intent = new Intent(mActivity, AuthActivity.class);
         mActivity.startActivity(intent);
     }
 
