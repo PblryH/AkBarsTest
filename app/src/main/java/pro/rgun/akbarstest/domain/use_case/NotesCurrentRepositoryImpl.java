@@ -14,6 +14,7 @@ import pro.rgun.akbarstest.domain.repository.ResponseListener;
 import pro.rgun.akbarstest.repository.file.FileNotesRepository;
 import pro.rgun.akbarstest.repository.shares_preferences.SharedPreferencesNotesRepository;
 import pro.rgun.akbarstest.repository.sqlite.SQLiteNotesRepository;
+import pro.rgun.akbarstest.repository.vk_wall.VkWallNotesRepository;
 
 /**
  * Created by rgun on 29.09.16.
@@ -89,6 +90,8 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
                 notesRepository = new FileNotesRepository(mContext);
                 break;
             case VKWALL:
+                notesRepository = new VkWallNotesRepository();
+                break;
             default:
                 throw new RuntimeException(
                         String.format("Repository %s not yet implemented", getCurrentStorageType().name()));
