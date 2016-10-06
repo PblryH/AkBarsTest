@@ -42,6 +42,10 @@ public class VkWallNotesRepository implements NotesRepository {
     @Override
     public void getAllNotes(ResponseListener<List<Note>> listener) {
 
+    }
+
+    private void readFromVkWall(){
+
         VKRequest request = new VKRequest(
                 METHOD_WALL_SEARCH,
                 VKParameters.from("query", QUERY));
@@ -60,7 +64,7 @@ public class VkWallNotesRepository implements NotesRepository {
 
             @Override
             public void onError(VKError error) {
-                listener.onGetResponse(null);
+//                listener.onGetResponse(null);
             }
 
             @Override
