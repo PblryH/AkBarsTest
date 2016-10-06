@@ -11,6 +11,7 @@ import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.domain.repository.NotesRepository;
 import pro.rgun.akbarstest.domain.repository.ResponseListener;
+import pro.rgun.akbarstest.repository.file.FileNotesRepository;
 import pro.rgun.akbarstest.repository.shares_preferences.SharedPreferencesNotesRepository;
 import pro.rgun.akbarstest.repository.sqlite.SQLiteNotesRepository;
 
@@ -85,6 +86,8 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
                 notesRepository = new SQLiteNotesRepository(mContext);
                 break;
             case FILE:
+                notesRepository = new FileNotesRepository(mContext);
+                break;
             case VKWALL:
             default:
                 throw new RuntimeException(
