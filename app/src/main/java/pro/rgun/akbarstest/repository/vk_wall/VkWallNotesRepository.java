@@ -1,16 +1,10 @@
 package pro.rgun.akbarstest.repository.vk_wall;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKParameters;
-import com.vk.sdk.api.VKRequest;
-import com.vk.sdk.api.VKResponse;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -29,42 +23,90 @@ import timber.log.Timber;
 
 public class VkWallNotesRepository implements NotesRepository {
 
-    public static final String QUERY = "AkBars Storage";
 
-    public static final String METHOD_WALL_SEARCH = "wall.search";
-
+    private final VkWallStorageHelper mVkWallStorageHelper;
     private Gson mGson = new GsonBuilder().create();
+
+    public VkWallNotesRepository(Context context) {
+        mVkWallStorageHelper = new VkWallStorageHelper(context);
+    }
 
     @Override
     public void getNote(String id, ResponseListener<Note> listener) {
+        getNotesMap(notes -> {
+            listener.onGetResponse(notes.get(id));
+        });
     }
 
     @Override
     public void saveNote(Note note, ResponseListener<Void> listener) {
+        getNotesMap(notes -> {
+            notes.put(note.getId(),note);
+            String jsonNotes = mGson.toJson(notes);
+            mVkWallStorageHelper.write(jsonNotes, new VkCallback<Integer>() {
+                @Override
+                public void onSuccess(Integer result) {
+                    listener.onGetResponse(null);
+                }
 
+                @Override
+                public void onError(MyVkError error) {
+
+                }
+            });
+        });
     }
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener) {
+        getNotesMap(notes -> {
+            notes.remove(id);
+            String jsonNotes = mGson.toJson(notes);
+            mVkWallStorageHelper.write(jsonNotes, new VkCallback<Integer>() {
+                @Override
+                public void onSuccess(Integer result) {
+                    listener.onGetResponse(null);
+                }
 
+                @Override
+                public void onError(MyVkError error) {
+
+                }
+            });
+        });
     }
 
     @Override
     public void getAllNotes(ResponseListener<List<Note>> listener) {
-        readFromVkWall(new VkCallback() {
+        getNotesMap(notes -> {
+            List<Note> list = new ArrayList<>();
+            if (notes != null) {
+                list = new ArrayList(notes.values());
+            }
+            listener.onGetResponse(list);
+        });
+    }
+
+    public void getNotesMap(ResponseListener<Map<String, Note>> listener) {
+        mVkWallStorageHelper.read(new VkCallback<String>() {
             @Override
             public void onSuccess(String string) {
-                Map<String, Note> notes = getNotes(string);
-                List<Note> list = new ArrayList<>();
-                if (notes != null) {
-                    list = new ArrayList(notes.values());
-                }
-                listener.onGetResponse(list);
+                listener.onGetResponse(getNotes(string));
             }
 
             @Override
-            public void onError() {
-                listener.onGetResponse(null);
+            public void onError(MyVkError error) {
+                Timber.d(error.name());
+                switch (error){
+                    case STORAGE_NOT_FOUND:
+                        break;
+                    case PARSE_ERROR:
+                        break;
+                    case ATTEMPT_FAILED:
+                        break;
+                    case VK_ERROR:
+                        break;
+                }
             }
         });
     }
@@ -76,52 +118,5 @@ public class VkWallNotesRepository implements NotesRepository {
         return  notes;
     }
 
-    private void readFromVkWall(VkCallback callback){
 
-        VKRequest request = new VKRequest(
-                METHOD_WALL_SEARCH,
-                VKParameters.from("query", QUERY));
-
-        request.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-                try {
-                    JSONArray items = response.json.getJSONObject("response").getJSONArray("items");
-                    if(items.length() > 0){
-                        JSONObject object = items.getJSONObject(0);
-                        String text = object.getString("text");
-                        String[] strings = text.split("\\n");
-                        if(strings.length > 1){
-                            String string = strings[1];
-                            callback.onSuccess(string);
-                            return;
-                        }
-                    }
-                    callback.onError();
-                } catch (JSONException e) {
-                    Timber.d("Parse error");
-                    callback.onError();
-                }
-            }
-
-            @Override
-            public void onError(VKError error) {
-//                listener.onGetResponse(null);
-                callback.onError();
-            }
-
-            @Override
-            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-                Timber.d("attemptFailed %d", attemptNumber);
-                callback.onError();
-            }
-        });
-    }
-
-    interface VkCallback {
-
-        void onSuccess(String string);
-
-        void onError();
-    }
 }

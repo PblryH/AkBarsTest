@@ -90,7 +90,7 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
                 notesRepository = new FileNotesRepository(mContext);
                 break;
             case VKWALL:
-                notesRepository = new VkWallNotesRepository();
+                notesRepository = new VkWallNotesRepository(mContext);
                 break;
             default:
                 throw new RuntimeException(

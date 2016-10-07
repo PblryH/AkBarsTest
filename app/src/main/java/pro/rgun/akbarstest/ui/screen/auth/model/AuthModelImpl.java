@@ -20,7 +20,7 @@ public class AuthModelImpl implements AuthModel {
      * @see <a href="https://vk.com/dev/permissions">vk.com api permissions documentation</a>
      */
     public static final String[] mScope = new String[]{
-            VKScope.PHOTOS,
+            VKScope.PHOTOS, VKScope.WALL
     };
 
     private boolean mIsResumed = false;

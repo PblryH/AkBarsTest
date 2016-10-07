@@ -17,6 +17,7 @@ public class NoteDetailModelImpl implements NoteDetailModel {
 
     private final NotesCurrentRepository mNotesCurrentRepository;
     private Note mNote;
+    private String mNoteId;
 
     public NoteDetailModelImpl(Context context) {
         mNotesCurrentRepository = ((Application) context.getApplicationContext()).getNotesCurrentRepository();
@@ -24,7 +25,12 @@ public class NoteDetailModelImpl implements NoteDetailModel {
 
     @Override
     public void initNote(String id) {
-        mNotesCurrentRepository.getNote(id, note -> {
+        mNoteId = id;
+    }
+
+    @Override
+    public void getNote(ResponseListener<Note> listener) {
+        mNotesCurrentRepository.getNote(mNoteId, note -> {
                     mNote = note;
                     if (mNote == null) {
                         mNote = new Note();
@@ -33,13 +39,9 @@ public class NoteDetailModelImpl implements NoteDetailModel {
                         this.mNote.setTitle("");
                         this.mNote.setText("");
                     }
+                    listener.onGetResponse(mNote);
                 }
         );
-    }
-
-    @Override
-    public void getNote(ResponseListener<Note> listener) {
-        listener.onGetResponse(mNote);
     }
 
     @Override
