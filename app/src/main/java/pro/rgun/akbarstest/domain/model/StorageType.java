@@ -16,4 +16,15 @@ public enum StorageType {
     StorageType(int code) {
         mCode = code;
     }
+
+    public int getCode() {
+        return mCode;
+    }
+
+    public static StorageType parse(int code) {
+        for(StorageType st : values()){
+            if(st.getCode() == code) return st;
+        }
+        return null;
+    }
 }

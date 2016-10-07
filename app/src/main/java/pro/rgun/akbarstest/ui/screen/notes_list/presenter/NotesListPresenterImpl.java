@@ -2,6 +2,7 @@ package pro.rgun.akbarstest.ui.screen.notes_list.presenter;
 
 import com.vk.sdk.VKSdk;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -27,6 +28,7 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
     @Override
     public void onMenuChooseStorageClicked() {
         mView.showChooseStorageDialog(mModel.getCurrentStorageType(), (storageType) -> {
+            mView.fillNotes(new ArrayList<>());
             if(storageType == StorageType.VKWALL && !VKSdk.isLoggedIn()){
                 mView.openVkAuthScreen();
                 return;

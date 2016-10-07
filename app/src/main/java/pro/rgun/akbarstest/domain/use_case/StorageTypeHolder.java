@@ -1,28 +1,34 @@
 package pro.rgun.akbarstest.domain.use_case;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import pro.rgun.akbarstest.domain.model.StorageType;
+
+
 
 /**
  * Created by rgun on 29.09.16.
  */
 public class StorageTypeHolder {
 
-    private StorageType mStorageType = StorageType.SHARED_PREFERENCES;
+    public static final String STORAGE_TYPE = "StorageType";
+    private final SharedPreferences pref;
 
-    private static StorageTypeHolder ourInstance = new StorageTypeHolder();
-
-    public static StorageTypeHolder getInstance() {
-        return ourInstance;
-    }
-
-    private StorageTypeHolder() {
+    public StorageTypeHolder(Context context) {
+        pref = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public StorageType getType() {
-        return mStorageType;
+        int code = pref.getInt(STORAGE_TYPE, StorageType.SHARED_PREFERENCES.getCode());
+        StorageType type = StorageType.parse(code);
+        return type;
     }
 
     public void setType(StorageType type) {
-        mStorageType = type;
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putInt(STORAGE_TYPE, type.getCode());
+        edit.apply();
     }
 }

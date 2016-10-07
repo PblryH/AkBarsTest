@@ -23,18 +23,20 @@ import pro.rgun.akbarstest.repository.vk_wall.VkWallNotesRepository;
 public class NotesCurrentRepositoryImpl extends Observable implements NotesCurrentRepository {
 
 
+    private final StorageTypeHolder storageTypeHolder;
     private Context mContext;
 
     public NotesCurrentRepositoryImpl(Context context){
         mContext = context;
+        storageTypeHolder = new StorageTypeHolder(context);
     }
 
     public StorageType getCurrentStorageType() {
-        return StorageTypeHolder.getInstance().getType();
+        return storageTypeHolder.getType();
     }
 
     public void setCurrentStorageType(StorageType currentStorageType) {
-        StorageTypeHolder.getInstance().setType(currentStorageType);
+        storageTypeHolder.setType(currentStorageType);
     }
 
     @Override
