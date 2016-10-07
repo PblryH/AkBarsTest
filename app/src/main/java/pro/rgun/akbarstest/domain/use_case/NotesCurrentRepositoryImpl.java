@@ -56,18 +56,22 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
 
     @Override
     public void saveNote(Note note, ResponseListener<Void> listener) {
-        getNotesRepository().saveNote(note, listener);
-        setChanged();
-        notifyObservers();
+        getNotesRepository().saveNote(note, response -> {
+            listener.onGetResponse(null);
+            setChanged();
+            notifyObservers();
+        });
     }
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener, boolean isNeedUpdate) {
-        getNotesRepository().deleteNote(id, listener);
-        if(isNeedUpdate) {
-            setChanged();
-            notifyObservers();
-        }
+        getNotesRepository().deleteNote(id, response -> {
+            listener.onGetResponse(null);
+            if(isNeedUpdate) {
+                setChanged();
+                notifyObservers();
+            }
+        });
     }
 
     @Override
