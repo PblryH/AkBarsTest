@@ -56,7 +56,7 @@ public class NoteDetailViewImpl implements NoteDetailView {
     private void initToolbar() {
         mActivity.setSupportActionBar(vh.toolbar);
         mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mActivity.getSupportActionBar().setTitle("Заметка");
+        mActivity.getSupportActionBar().setTitle(R.string.note);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class NoteDetailViewImpl implements NoteDetailView {
     ///////////////////////////////////////////////////////////////////////////
 
     private void initEditor() {
-        vh.note.editor.setPlaceholder("Текст заметки ...");
+        vh.note.editor.setPlaceholder(mActivity.getString(R.string.noteText));
         vh.note.editor.setHideKeyboardListener(() -> vh.note.noteContent.requestFocus());
         vh.note.editor.setHtml(mText);
     }
@@ -152,19 +152,19 @@ public class NoteDetailViewImpl implements NoteDetailView {
     @Override
     public void showDeleteDialog() {
         AlertDialog.Builder adb = new AlertDialog.Builder(mActivity);
-        adb.setTitle("Вы действительно хотите удалить заметку?")
-                .setPositiveButton("Да", (dialogInterface, i) -> mPresenter.deleteNote())
-                .setNegativeButton("Нет", null)
+        adb.setTitle(R.string.deleteDialogTitle)
+                .setPositiveButton(R.string.yes, (dialogInterface, i) -> mPresenter.deleteNote())
+                .setNegativeButton(R.string.no, null)
                 .create().show();
     }
 
     @Override
     public void showSaveDialog() {
         new AlertDialog.Builder(mActivity)
-                .setTitle("Сохранить изменения")
-                .setPositiveButton("Да", (dialogInterface, i) -> mPresenter.saveNote())
-                .setNegativeButton("Нет", (dialogInterface, i) -> back())
-                .setNeutralButton("Отмена", null)
+                .setTitle(R.string.saveDialogTitle)
+                .setPositiveButton(R.string.yes, (dialogInterface, i) -> mPresenter.saveNote())
+                .setNegativeButton(R.string.no, (dialogInterface, i) -> back())
+                .setNeutralButton(R.string.cancel, null)
                 .create()
                 .show();
 
@@ -194,8 +194,8 @@ public class NoteDetailViewImpl implements NoteDetailView {
     @Override
     public void showEmptyTitleDialog() {
         new AlertDialog.Builder(mActivity)
-                .setTitle("Введите заголовок заметки")
-                .setPositiveButton("Ок", null)
+                .setTitle(R.string.emptyTitleDialogTitle)
+                .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
     }

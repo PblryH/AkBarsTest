@@ -41,6 +41,7 @@ import pro.rgun.akbarstest.ui.screen.notes_list.NotesListActivity;
 import pro.rgun.akbarstest.ui.screen.notes_list.presenter.NotesListPresenter;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.recycler.CheckListItemModel;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.recycler.NotesListAdapter;
+import rx.Observable;
 import timber.log.Timber;
 
 
@@ -167,7 +168,7 @@ public class NotesListViewImpl implements
     @Override
     public void showChooseStorageDialog(StorageType currentStorageType, ChooserStorageDialogListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("Выберете хранилище");
+        builder.setTitle(R.string.chooseStorage);
         builder.setSingleChoiceItems(getStorageTypeNames(), currentStorageType.ordinal(), (dialog, item) -> {
             listener.onStorageSelected(StorageType.values()[item]);
             chooseStorageDialog.dismiss();
@@ -179,18 +180,18 @@ public class NotesListViewImpl implements
     @Override
     public void setCurrentStorageInfoInToolbarSubtitle(StorageType currentStorageType) {
         mActivity.getSupportActionBar()
-                .setSubtitle(String.format("в %s", getStorageTypeNames()[currentStorageType.ordinal()]));
+                .setSubtitle(String.format(mActivity.getString(R.string.storageIn), getStorageTypeNames()[currentStorageType.ordinal()]));
     }
 
     @Override
     public void fillNotes(List<Note> notes) {
         mAdapter.clear();
-        rx.Observable.from(notes)
+        Observable.from(notes)
                 .map(note -> {
                     CheckListItemModel checkListItemModel = new CheckListItemModel();
                     checkListItemModel.id = note.getId();
                     checkListItemModel.title = note.getTitle();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d MMMM  HH:mm");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(mActivity.getString(R.string.dateFormat));
                     checkListItemModel.createdDate = simpleDateFormat.format(new Date(note.getDateTimeTS()));
                     return checkListItemModel;
                 })
@@ -222,19 +223,19 @@ public class NotesListViewImpl implements
         String[] names = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             StorageType storageType = values[i];
-            String name = "Unknown storage";
+            String name = mActivity.getString(R.string.unknownStorage);
             switch (storageType) {
                 case SHARED_PREFERENCES:
-                    name = "Shared preferences";
+                    name = mActivity.getString(R.string.sharedPreferences);
                     break;
                 case SQLITE:
-                    name = "SQLite";
+                    name = mActivity.getString(R.string.SQLite);
                     break;
                 case FILE:
-                    name = "File";
+                    name = mActivity.getString(R.string.File);
                     break;
                 case VKWALL:
-                    name = "VK Wall";
+                    name = mActivity.getString(R.string.vkWall);
                     break;
             }
             names[i] = name;
@@ -245,7 +246,7 @@ public class NotesListViewImpl implements
     private void initToolbar() {
         // настраиваем action bar
         mActivity.setSupportActionBar(vh.toolbar);
-        mActivity.getSupportActionBar().setTitle("Заметки");
+        mActivity.getSupportActionBar().setTitle(R.string.notes);
     }
 
 
