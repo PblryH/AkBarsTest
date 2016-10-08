@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import pro.rgun.akbarstest.Application;
 import pro.rgun.akbarstest.domain.model.Note;
+import pro.rgun.akbarstest.domain.repository.ResponseListener;
 import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepository;
-import pro.rgun.akbarstest.ui.screen.notes_list.model.ResponseListener;
 
 /**
  * Created by rgun on 10.09.16.

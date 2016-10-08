@@ -45,11 +45,23 @@ public interface NoteDetailPresenter {
      */
     void onMenuDeleteClicked();
 
+    /**
+     * Сохранить заметку
+     */
     void saveNote();
 
+    /**
+     * При завершении инициализации вью
+     */
     void onInitViewComplete();
 
+    /**
+     * Удалить заметку
+     */
     void deleteNote();
 
+    /**
+     * При нажатии "назад"
+     */
     void onBackPressed();
 }

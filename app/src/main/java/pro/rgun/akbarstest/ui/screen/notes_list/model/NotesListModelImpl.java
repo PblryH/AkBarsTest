@@ -8,6 +8,7 @@ import java.util.Observer;
 import pro.rgun.akbarstest.Application;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
+import pro.rgun.akbarstest.domain.repository.ResponseListener;
 import pro.rgun.akbarstest.domain.use_case.NotesCurrentRepository;
 
 /**
