@@ -29,11 +29,11 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
     public void onMenuChooseStorageClicked() {
         mView.showChooseStorageDialog(mModel.getCurrentStorageType(), (storageType) -> {
             mView.fillNotes(new ArrayList<>());
+            mModel.setCurrentStorageType(storageType);
             if(storageType == StorageType.VKWALL && !VKSdk.isLoggedIn()){
                 mView.openVkAuthScreen();
                 return;
             }
-            mModel.setCurrentStorageType(storageType);
             mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
             mModel.getNotes(mView::fillNotes);
         });
