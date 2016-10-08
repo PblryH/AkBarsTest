@@ -1,5 +1,6 @@
 package pro.rgun.akbarstest.ui.screen.notes_list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
+import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.extras.architecture.BaseRetainFragment;
 import pro.rgun.akbarstest.ui.screen.notes_list.dagger.DaggerNotesListComponent;
 import pro.rgun.akbarstest.ui.screen.notes_list.dagger.NotesListComponent;
@@ -45,6 +47,11 @@ public class NotesListFragment extends BaseRetainFragment<NotesListView> {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        Intent intent = getActivity().getIntent();
+        if(intent != null && intent.hasExtra(NotesListActivity.INTENT_EXTRA_STORAGE_TYPE)){
+            int typeCode = intent.getIntExtra(NotesListActivity.INTENT_EXTRA_STORAGE_TYPE, StorageType.SHARED_PREFERENCES.getCode());
+            mModel.setCurrentStorageType(StorageType.parse(typeCode));
+        }
         mView.initView(inflater, container);
         return mView.getView();
     }

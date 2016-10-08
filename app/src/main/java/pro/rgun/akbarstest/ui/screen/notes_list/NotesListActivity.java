@@ -8,6 +8,7 @@ import pro.rgun.akbarstest.R;
 public class NotesListActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    public static final String INTENT_EXTRA_STORAGE_TYPE = "extraStorageType";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -13,7 +13,7 @@ public interface AuthView {
     /**
      * Перейти на экран списка друзей
      */
-    void showFriendsListScreen();
+    void showNotesListScreen();
 
     /**
      * Показать тоаст

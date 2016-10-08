@@ -197,6 +197,7 @@ public class NotesListViewImpl implements
                 })
                 .toList()
                 .subscribe(checkListItemModels -> mAdapter.addAll(checkListItemModels));
+        if(vh.recycler.swipeRefreshLayout != null)
         vh.recycler.swipeRefreshLayout.setRefreshing(false);
     }
 

@@ -23,7 +23,7 @@ public class AuthPresenterImpl implements AuthPresenter{
 
         @Override
         public void onAuthorized() {
-            mView.showFriendsListScreen();
+            mView.showNotesListScreen();
         }
 
         @Override
@@ -43,7 +43,7 @@ public class AuthPresenterImpl implements AuthPresenter{
 
     private void enter() {
         if (VKSdk.isLoggedIn()) {
-            mView.showFriendsListScreen();
+            mView.showNotesListScreen();
         } else {
             mView.showLogin();
         }

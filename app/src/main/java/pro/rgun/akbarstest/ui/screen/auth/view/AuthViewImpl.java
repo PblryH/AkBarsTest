@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import pro.rgun.akbarstest.R;
+import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.screen.auth.inner_components.login.LoginFragment;
 import pro.rgun.akbarstest.ui.screen.notes_list.NotesListActivity;
+
+import static pro.rgun.akbarstest.ui.screen.notes_list.NotesListActivity.INTENT_EXTRA_STORAGE_TYPE;
 
 
 /**
@@ -31,8 +34,10 @@ public class AuthViewImpl implements AuthView {
     }
 
     @Override
-    public void showFriendsListScreen() {
-        mActivity.startActivity(new Intent(mActivity, NotesListActivity.class));
+    public void showNotesListScreen() {
+        Intent intent = new Intent(mActivity, NotesListActivity.class);
+        intent.putExtra(INTENT_EXTRA_STORAGE_TYPE, StorageType.VKWALL.getCode());
+        mActivity.startActivity(intent);
         mActivity.finish();
     }
 
