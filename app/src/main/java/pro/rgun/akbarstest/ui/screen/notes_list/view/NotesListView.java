@@ -1,8 +1,11 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.view;
 
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.vk.sdk.api.VKError;
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ import pro.rgun.akbarstest.ui.screen.notes_list.presenter.NotesListPresenter;
 public interface NotesListView extends BaseView<NotesListPresenter> {
 
     /**
-     * При создании меню
+     * Вызывается при событии Activity#onCreateOptionsMenu
      * @param menu
      * @param inflater
      * @return
@@ -25,7 +28,7 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
     boolean onCreateOptionsMenu(Menu menu, MenuInflater inflater);
 
     /**
-     * При выборе пункта меню
+     * Вызывается при событии Activity#onOptionsItemSelected
      * @param item
      * @return
      */
@@ -42,7 +45,7 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
     void onResume();
 
     /**
-     * При запросе разрешения
+     * Вызывается при событии Activity#onRequestPermissionsResult
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -90,11 +93,37 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
     void openVkAuthScreen();
 
     /**
+     * Вызывается при событии Activity#onActivityResult
+     */
+    void onActivityResult(int requestCode, int resultCode, Intent data);
+
+    /**
      * Колбэк выбора хранилища
      */
     interface ChooserStorageDialogListener {
 
         void onStorageSelected(StorageType storageType);
 
+    }
+
+
+    /**
+     * Устанавливает колбэк авторизации через VK
+     * @param callback {@link CallBack}
+     */
+    void setCallback(CallBack callback);
+
+    interface CallBack {
+
+        /**
+         * Вызывается когда имеется авторизация
+         */
+        void onAuthorized();
+
+        /**
+         * При ошибке авторизации
+         * @param error {@link VKError}
+         */
+        void onAuthorizationError(VKError error);
     }
 }

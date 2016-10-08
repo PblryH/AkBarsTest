@@ -84,4 +84,10 @@ public class NotesListFragment extends BaseRetainFragment<NotesListView> {
                                            String permissions[], int[] grantResults){
         mView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mView.onActivityResult(requestCode, resultCode, data);
+    }
 }

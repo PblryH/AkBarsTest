@@ -4,7 +4,6 @@
     <string name="image">Image</string>
     <string name="empty">Empty</string>
     <string name="button_undo">undo</string>
-    <string name="action_sign_in_short">Войти с помощью VK</string>
     <string name="AccessTokenInvalidated">AccessToken invalidated</string>
     <string name="note">Заметка</string>
     <string name="noteText">Текст заметки &#8230;</string>

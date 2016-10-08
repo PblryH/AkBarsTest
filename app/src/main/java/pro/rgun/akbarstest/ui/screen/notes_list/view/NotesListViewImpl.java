@@ -25,6 +25,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKScope;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKError;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +40,6 @@ import pro.rgun.akbarstest.R;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.ui.extras.recycler.DividerItemDecoration;
-import pro.rgun.akbarstest.ui.screen.auth.AuthActivity;
 import pro.rgun.akbarstest.ui.screen.note_detail.NoteDetailActivity;
 import pro.rgun.akbarstest.ui.screen.notes_list.NotesListActivity;
 import pro.rgun.akbarstest.ui.screen.notes_list.presenter.NotesListPresenter;
@@ -52,12 +56,22 @@ public class NotesListViewImpl implements
         NotesListView,
         SwipeRefreshLayout.OnRefreshListener {
 
-    AlertDialog chooseStorageDialog;
+    /**
+     * Scope is set of required permissions for your application
+     *
+     * @see <a href="https://vk.com/dev/permissions">vk.com api permissions documentation</a>
+     */
+    public static final String[] mScope = new String[]{
+            VKScope.WALL
+    };
+
+    private AlertDialog chooseStorageDialog;
     private NotesListPresenter mPresenter;
     private AppCompatActivity mActivity;
     private NotesListVH vh;
     private NotesListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    private CallBack mCallback;
 
     @Override
     public void setPresenter(NotesListPresenter presenter) {
@@ -215,8 +229,31 @@ public class NotesListViewImpl implements
 
     @Override
     public void openVkAuthScreen() {
-        Intent intent = new Intent(mActivity, AuthActivity.class);
-        mActivity.startActivity(intent);
+        VKSdk.login(mActivity, mScope);
+    }
+
+    private VKCallback<VKAccessToken> callback = new VKCallback<VKAccessToken>() {
+        @Override
+        public void onResult(VKAccessToken res) {
+            // User passed Authorization
+            mCallback.onAuthorized();
+        }
+
+        @Override
+        public void onError(VKError error) {
+            // User didn't pass Authorization
+            mCallback.onAuthorizationError(error);
+        }
+    };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        VKSdk.onActivityResult(requestCode, resultCode, data, callback);
+    }
+
+    @Override
+    public void setCallback(CallBack callback) {
+        mCallback = callback;
     }
 
     private String[] getStorageTypeNames() {

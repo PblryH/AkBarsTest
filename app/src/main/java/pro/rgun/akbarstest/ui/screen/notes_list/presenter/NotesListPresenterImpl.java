@@ -1,6 +1,7 @@
 package pro.rgun.akbarstest.ui.screen.notes_list.presenter;
 
 import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKError;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -19,10 +20,26 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
     private final NotesListView mView;
     private final NotesListModel mModel;
 
+    private NotesListView.CallBack  mCallBack = new NotesListView.CallBack() {
+
+        @Override
+        public void onAuthorized() {
+            chooseStorage(StorageType.VKWALL);
+        }
+
+        @Override
+        public void onAuthorizationError(VKError error) {
+            if(error != null && error.errorMessage != null && !error.errorMessage.isEmpty()) {
+                mView.showToast(error.errorMessage);
+            }
+        }
+    };
+
     public NotesListPresenterImpl(NotesListView view, NotesListModel model) {
         mView = view;
         mView.setPresenter(this);
         mModel = model;
+        mView.setCallback(mCallBack);
     }
 
     @Override
@@ -33,10 +50,14 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
                 mView.openVkAuthScreen();
                 return;
             }
-            mModel.setCurrentStorageType(storageType);
-            mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
-            mModel.getNotes(mView::fillNotes);
+            chooseStorage(storageType);
         });
+    }
+
+    private void chooseStorage(StorageType storageType){
+        mModel.setCurrentStorageType(storageType);
+        mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
+        mModel.getNotes(mView::fillNotes);
     }
 
     @Override
