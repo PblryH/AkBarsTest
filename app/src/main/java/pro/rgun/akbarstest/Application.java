@@ -39,9 +39,13 @@ public class Application extends android.app.Application {
         if (BuildConfig.DEBUG) {
             initTimber();
         }
+        initVK();
+        mNotesCurrentRepository = new NotesCurrentRepositoryImpl(this);
+    }
+
+    private void initVK(){
         vkAccessTokenTracker.startTracking();
         VKSdk.initialize(this);
-        mNotesCurrentRepository = new NotesCurrentRepositoryImpl(this);
     }
 
     private void initTimber(){

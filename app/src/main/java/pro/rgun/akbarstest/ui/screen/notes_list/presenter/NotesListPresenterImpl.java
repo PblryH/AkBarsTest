@@ -48,7 +48,7 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
     @Override
     public void onAddClick() {
-        mView.showNoteDetailScreen();
+        mView.showCreateNoteScreen();
     }
 
     @Override

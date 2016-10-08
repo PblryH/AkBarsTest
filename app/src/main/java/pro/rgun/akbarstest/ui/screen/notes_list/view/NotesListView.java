@@ -31,11 +31,22 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
      */
     boolean onOptionsItemSelected(MenuItem item);
 
-
+    /**
+     * При паузе
+     */
     void onPause();
 
+    /**
+     * При восстановлении
+     */
     void onResume();
 
+    /**
+     * При запросе разрешения
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults);
 
     /**
@@ -56,12 +67,26 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
      */
     void setCurrentStorageInfoInToolbarSubtitle(StorageType currentStorageType);
 
+    /**
+     * Заполнить список заметками
+     * @param notes - заметки
+     */
     void fillNotes(List<Note> notes);
 
-    void showNoteDetailScreen();
+    /**
+     * Открыть экран создания заметки
+     */
+    void showCreateNoteScreen();
 
+    /**
+     * Открыть экран редактирования заметки
+     * @param id
+     */
     void showNoteDetailScreen(String id);
 
+    /**
+     * Открыть экран авторизации ВК
+     */
     void openVkAuthScreen();
 
     /**

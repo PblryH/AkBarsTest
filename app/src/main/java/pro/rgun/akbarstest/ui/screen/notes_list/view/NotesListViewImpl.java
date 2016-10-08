@@ -200,7 +200,7 @@ public class NotesListViewImpl implements
     }
 
     @Override
-    public void showNoteDetailScreen() {
+    public void showCreateNoteScreen() {
         mActivity.startActivity(new Intent(mActivity, NoteDetailActivity.class));
     }
 
