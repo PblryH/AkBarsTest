@@ -1,5 +1,7 @@
 package pro.rgun.akbarstest.ui.screen.note_detail.presenter;
 
+import pro.rgun.akbarstest.domain.model.Note;
+import pro.rgun.akbarstest.domain.repository.ResponseListener;
 import pro.rgun.akbarstest.ui.screen.note_detail.model.NoteDetailModel;
 import pro.rgun.akbarstest.ui.screen.note_detail.view.NoteDetailView;
 import timber.log.Timber;
@@ -60,38 +62,86 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
     @Override
     public void saveNote() {
-        mModel.getNote(note -> {
-            note.setTitle(mView.getTitle());
-            note.setText(mView.getText());
-            mModel.saveNote(note,obj -> Timber.d("Note was saved"));
-            mView.back();
-        });
+        mModel.getNote(new ResponseListener<Note>() {
+                           @Override
+                           public void onGetResponse(Note note) {
+                               note.setTitle(mView.getTitle());
+                               note.setText(mView.getText());
+                               mModel.saveNote(note, new ResponseListener<Void>() {
+                                           @Override
+                                           public void onGetResponse(Void response) {
+                                               Timber.d("Note was saved");
+                                           }
+
+                                           @Override
+                                           public void onError() {
+                                               mView.showToast("Error");
+                                               mView.finish();
+                                           }
+                                       });
+                               mView.back();
+                           }
+
+                           @Override
+                           public void onError() {
+                               mView.showToast("Error");
+                               mView.finish();
+                           }
+                       });
     }
 
     @Override
     public void onInitViewComplete() {
-        mModel.getNote(note -> {
-            mView.setTitle(note.getTitle());
-            mView.setText(note.getText());
+        mModel.getNote(new ResponseListener<Note>() {
+            @Override
+            public void onGetResponse(Note note) {
+                mView.setTitle(note.getTitle());
+                mView.setText(note.getText());
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+                mView.finish();
+            }
         });
     }
 
     @Override
     public void deleteNote() {
-        mModel.deleteNote(obj -> mView.back());
+        mModel.deleteNote(new ResponseListener<Void>() {
+            @Override
+            public void onGetResponse(Void response) {
+                mView.back();
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        mModel.getNote(note -> {
-            if (!note.getTitle().equals(mView.getTitle()) || !note.getText().equals(mView.getText())) {
-                if (mView.getTitle().isEmpty()) {
-                    mView.showEmptyTitleDialog();
+        mModel.getNote(new ResponseListener<Note>() {
+            @Override
+            public void onGetResponse(Note note) {
+                if (!note.getTitle().equals(mView.getTitle()) || !note.getText().equals(mView.getText())) {
+                    if (mView.getTitle().isEmpty()) {
+                        mView.showEmptyTitleDialog();
+                    } else {
+                        mView.showSaveDialog();
+                    }
                 } else {
-                    mView.showSaveDialog();
+                    mView.back();
                 }
-            } else {
-                mView.back();
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+                mView.finish();
             }
         });
     }

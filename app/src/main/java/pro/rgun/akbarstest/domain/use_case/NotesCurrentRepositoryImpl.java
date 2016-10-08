@@ -15,6 +15,7 @@ import pro.rgun.akbarstest.repository.file.FileNotesRepository;
 import pro.rgun.akbarstest.repository.shares_preferences.SharedPreferencesNotesRepository;
 import pro.rgun.akbarstest.repository.sqlite.SQLiteNotesRepository;
 import pro.rgun.akbarstest.repository.vk_wall.VkWallNotesRepository;
+import timber.log.Timber;
 
 /**
  * Created by rgun on 29.09.16.
@@ -26,7 +27,7 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
     private final StorageTypeHolder storageTypeHolder;
     private Context mContext;
 
-    public NotesCurrentRepositoryImpl(Context context){
+    public NotesCurrentRepositoryImpl(Context context) {
         mContext = context;
         storageTypeHolder = new StorageTypeHolder(context);
     }
@@ -41,14 +42,22 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
 
     @Override
     public void getNotes(ResponseListener<List<Note>> listener) {
-        getNotesRepository().getAllNotes(noteList -> {
-                    Collections.sort(noteList, (note, note2) -> {
-                        if (note.getDateTimeTS() < note2.getDateTimeTS()) return 1;
-                        if (note.getDateTimeTS() > note2.getDateTimeTS()) return -1;
-                        else return 0;
-                    });
-                    listener.onGetResponse(noteList);
+        getNotesRepository().getAllNotes(new ResponseListener<List<Note>>() {
+            @Override
+            public void onGetResponse(List<Note> noteList) {
+                Collections.sort(noteList, (note, note2) -> {
+                    if (note.getDateTimeTS() < note2.getDateTimeTS()) return 1;
+                    if (note.getDateTimeTS() > note2.getDateTimeTS()) return -1;
+                    else return 0;
                 });
+                listener.onGetResponse(noteList);
+            }
+
+            @Override
+            public void onError() {
+                listener.onError();
+            }
+        });
     }
 
     @Override
@@ -58,20 +67,38 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
 
     @Override
     public void saveNote(Note note, ResponseListener<Void> listener) {
-        getNotesRepository().saveNote(note, response -> {
-            listener.onGetResponse(null);
-            setChanged();
-            notifyObservers();
+        getNotesRepository().saveNote(note, new ResponseListener<Void>() {
+            @Override
+            public void onGetResponse(Void response) {
+                listener.onGetResponse(null);
+                setChanged();
+                notifyObservers();
+            }
+
+            @Override
+            public void onError() {
+                Timber.d("onError");
+                listener.onError();
+            }
         });
     }
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener, boolean isNeedUpdate) {
-        getNotesRepository().deleteNote(id, response -> {
-            listener.onGetResponse(null);
-            if(isNeedUpdate) {
-                setChanged();
-                notifyObservers();
+        getNotesRepository().deleteNote(id, new ResponseListener<Void>() {
+            @Override
+            public void onGetResponse(Void response) {
+                listener.onGetResponse(null);
+                if (isNeedUpdate) {
+                    setChanged();
+                    notifyObservers();
+                }
+            }
+
+            @Override
+            public void onError() {
+                Timber.d("onError");
+                listener.onError();
             }
         });
     }
@@ -81,11 +108,11 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
         addObserver(observer);
     }
 
-    private NotesRepository getNotesRepository(){
+    private NotesRepository getNotesRepository() {
 
         NotesRepository notesRepository;
 
-        switch (getCurrentStorageType()){
+        switch (getCurrentStorageType()) {
             case SHARED_PREFERENCES:
                 notesRepository = new SharedPreferencesNotesRepository(mContext);
                 break;

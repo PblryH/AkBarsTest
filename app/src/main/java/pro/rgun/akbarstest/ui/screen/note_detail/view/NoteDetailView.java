@@ -110,4 +110,14 @@ public interface NoteDetailView extends BaseView<NoteDetailPresenter> {
      */
     void onPause();
 
+    /**
+     * Показать тоаст
+     * @param message сообщение
+     */
+    void showToast(String message);
+
+    /**
+     * Завершает активити
+     */
+    void finish();
 }

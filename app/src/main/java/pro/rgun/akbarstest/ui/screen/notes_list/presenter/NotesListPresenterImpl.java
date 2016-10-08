@@ -4,10 +4,13 @@ import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
+import pro.rgun.akbarstest.domain.repository.ResponseListener;
 import pro.rgun.akbarstest.ui.screen.notes_list.model.NotesListModel;
 import pro.rgun.akbarstest.ui.screen.notes_list.view.NotesListView;
 import timber.log.Timber;
@@ -57,13 +60,33 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
     private void chooseStorage(StorageType storageType){
         mModel.setCurrentStorageType(storageType);
         mView.setCurrentStorageInfoInToolbarSubtitle(storageType);
-        mModel.getNotes(mView::fillNotes);
+        mModel.getNotes(new ResponseListener<List<Note>>() {
+            @Override
+            public void onGetResponse(List<Note> response) {
+                mView.fillNotes(response);
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+            }
+        });
     }
 
     @Override
     public void onInitViewComplete() {
         mView.setCurrentStorageInfoInToolbarSubtitle(mModel.getCurrentStorageType());
-        mModel.getNotes(mView::fillNotes);
+        mModel.getNotes(new ResponseListener<List<Note>>() {
+            @Override
+            public void onGetResponse(List<Note> response) {
+                mView.fillNotes(response);
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+            }
+        });
         mModel.subscribeToNotesUpdate(this);
     }
 
@@ -79,17 +102,48 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
     @Override
     public void onItemDelete(String id) {
-        mModel.deleteNote(id, obj -> Timber.d("Note was deleted"));
+        mModel.deleteNote(id, new ResponseListener<Void>() {
+            @Override
+            public void onGetResponse(Void response) {
+                Timber.d("Note was deleted");
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+            }
+        });
     }
 
     @Override
     public void onPullToRefresh() {
-        mModel.getNotes(mView::fillNotes);
+        mModel.getNotes(new ResponseListener<List<Note>>() {
+            @Override
+            public void onGetResponse(List<Note> response) {
+                mView.fillNotes(response);
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+                mView.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void update(Observable observable, Object o) {
         Timber.d("update");
-        mModel.getNotes(mView::fillNotes);
+        mModel.getNotes(new ResponseListener<List<Note>>() {
+            @Override
+            public void onGetResponse(List<Note> response) {
+                mView.fillNotes(response);
+            }
+
+            @Override
+            public void onError() {
+                mView.showToast("Error");
+            }
+        });
     }
 }

@@ -30,27 +30,34 @@ public class NoteDetailModelImpl implements NoteDetailModel {
 
     @Override
     public void getNote(ResponseListener<Note> listener) {
-        mNotesCurrentRepository.getNote(mNoteId, note -> {
-                    mNote = note;
-                    if (mNote == null) {
-                        mNote = new Note();
-                        mNote.setId(UUID.randomUUID().toString());
-                        mNote.setDateTimeTS(System.currentTimeMillis());
-                        this.mNote.setTitle("");
-                        this.mNote.setText("");
+        mNotesCurrentRepository.getNote(mNoteId, new ResponseListener<Note>() {
+                    @Override
+                    public void onGetResponse(Note note) {
+                        mNote = note;
+                        if (mNote == null) {
+                            mNote = new Note();
+                            mNote.setId(UUID.randomUUID().toString());
+                            mNote.setDateTimeTS(System.currentTimeMillis());
+                            mNote.setTitle("");
+                            mNote.setText("");
+                        }
+                        listener.onGetResponse(mNote);
                     }
-                    listener.onGetResponse(mNote);
-                }
-        );
+
+                    @Override
+                    public void onError() {
+                        listener.onError();
+                    }
+                });
     }
 
     @Override
     public void saveNote(Note note, ResponseListener<Void> listener) {
-        mNotesCurrentRepository.saveNote(note, response -> listener.onGetResponse(null));
+        mNotesCurrentRepository.saveNote(note, listener);
     }
 
     @Override
     public void deleteNote(ResponseListener<Void> listener) {
-        mNotesCurrentRepository.deleteNote(mNote.getId(), response -> listener.onGetResponse(null), true);
+        mNotesCurrentRepository.deleteNote(mNote.getId(), listener, true);
     }
 }

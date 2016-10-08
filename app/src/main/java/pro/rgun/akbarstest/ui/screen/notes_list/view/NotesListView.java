@@ -77,6 +77,12 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
     void fillNotes(List<Note> notes);
 
     /**
+     * Установка прогресса pull-to-refresh
+     * @param b
+     */
+    void setRefreshing(boolean b);
+
+    /**
      * Открыть экран создания заметки
      */
     void showCreateNoteScreen();

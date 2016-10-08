@@ -33,57 +33,89 @@ public class VkWallNotesRepository implements NotesRepository {
 
     @Override
     public void getNote(String id, ResponseListener<Note> listener) {
-        getNotesMap(notes -> {
-            listener.onGetResponse(notes.get(id));
+        getNotesMap(new ResponseListener<Map<String, Note>>() {
+            @Override
+            public void onGetResponse(Map<String, Note> notes) {
+                listener.onGetResponse(notes.get(id));
+            }
+
+            @Override
+            public void onError() {
+                listener.onError();
+            }
         });
     }
 
     @Override
     public void saveNote(Note note, ResponseListener<Void> listener) {
-        getNotesMap(notes -> {
-            notes.put(note.getId(),note);
-            String jsonNotes = mGson.toJson(notes);
-            mVkWallStorageHelper.write(jsonNotes, new VkCallback<Integer>() {
-                @Override
-                public void onSuccess(Integer result) {
-                    listener.onGetResponse(null);
-                }
+        getNotesMap(new ResponseListener<Map<String, Note>>() {
+            @Override
+            public void onGetResponse(Map<String, Note> notes) {
+                notes.put(note.getId(), note);
+                String jsonNotes = mGson.toJson(notes);
+                mVkWallStorageHelper.write(jsonNotes, new VkCallback<Integer>() {
+                    @Override
+                    public void onSuccess(Integer result) {
+                        listener.onGetResponse(null);
+                    }
 
-                @Override
-                public void onError(MyVkError error) {
+                    @Override
+                    public void onError(MyVkError error) {
+                        listener.onError();
+                    }
+                });
+            }
 
-                }
-            });
+            @Override
+            public void onError() {
+                listener.onError();
+            }
         });
     }
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener) {
-        getNotesMap(notes -> {
-            notes.remove(id);
-            String jsonNotes = mGson.toJson(notes);
-            mVkWallStorageHelper.write(jsonNotes, new VkCallback<Integer>() {
-                @Override
-                public void onSuccess(Integer result) {
-                    listener.onGetResponse(null);
-                }
+        getNotesMap(new ResponseListener<Map<String, Note>>() {
+            @Override
+            public void onGetResponse(Map<String, Note> notes) {
+                notes.remove(id);
+                String jsonNotes = mGson.toJson(notes);
+                mVkWallStorageHelper.write(jsonNotes, new VkCallback<Integer>() {
+                    @Override
+                    public void onSuccess(Integer result) {
+                        listener.onGetResponse(null);
+                    }
 
-                @Override
-                public void onError(MyVkError error) {
+                    @Override
+                    public void onError(MyVkError error) {
+                        listener.onError();
+                    }
+                });
+            }
 
-                }
-            });
+            @Override
+            public void onError() {
+                listener.onError();
+            }
         });
     }
 
     @Override
     public void getAllNotes(ResponseListener<List<Note>> listener) {
-        getNotesMap(notes -> {
-            List<Note> list = new ArrayList<>();
-            if (notes != null) {
-                list = new ArrayList(notes.values());
+        getNotesMap(new ResponseListener<Map<String, Note>>() {
+            @Override
+            public void onGetResponse(Map<String, Note> notes) {
+                List<Note> list = new ArrayList<>();
+                if (notes != null) {
+                    list = new ArrayList(notes.values());
+                }
+                listener.onGetResponse(list);
             }
-            listener.onGetResponse(list);
+
+            @Override
+            public void onError() {
+                listener.onError();
+            }
         });
     }
 
@@ -96,6 +128,7 @@ public class VkWallNotesRepository implements NotesRepository {
 
             @Override
             public void onError(MyVkError error) {
+                listener.onError();
                 Timber.d(error.name());
                 switch (error){
                     case STORAGE_NOT_FOUND:

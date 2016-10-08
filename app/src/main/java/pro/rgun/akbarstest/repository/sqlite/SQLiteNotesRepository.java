@@ -63,18 +63,25 @@ public class SQLiteNotesRepository implements NotesRepository {
     public void saveNote(Note note, ResponseListener<Void> listener) {
         String jsonNote = mGson.toJson(note);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        getNote(note.getId(), note1 -> {
-            ContentValues cv = new ContentValues();
-            cv.put(COL_UUID, note.getId());
-            cv.put(COL_JSON, jsonNote);
-            long rowID;
-            if(note1 == null) {
-                rowID = db.insert(TABLE, null, cv);
+        getNote(note.getId(), new ResponseListener<Note>() {
+            @Override
+            public void onGetResponse(Note note1) {
+                ContentValues cv = new ContentValues();
+                cv.put(COL_UUID, note.getId());
+                cv.put(COL_JSON, jsonNote);
+                long rowID;
+                if (note1 == null) {
+                    rowID = db.insert(TABLE, null, cv);
+                } else {
+                    rowID = db.update(TABLE, cv, COL_UUID + "=?", new String[]{note.getId()});
+                }
+                Timber.d("row inserted, ID = %d", rowID);
             }
-            else{
-                rowID = db.update(TABLE, cv, COL_UUID + "=?", new String[]{note.getId()});
+
+            @Override
+            public void onError() {
+
             }
-            Timber.d("row inserted, ID = %d",rowID);
         });
 
         if (listener != null) {

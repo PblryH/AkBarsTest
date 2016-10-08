@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 
@@ -203,5 +204,15 @@ public class NoteDetailViewImpl implements NoteDetailView {
     @Override
     public void onPause() {
         mText = getText();
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void finish() {
+        mActivity.finish();
     }
 }

@@ -179,6 +179,7 @@ public class NotesListViewImpl implements
         Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void showChooseStorageDialog(StorageType currentStorageType, ChooserStorageDialogListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
@@ -211,8 +212,13 @@ public class NotesListViewImpl implements
                 })
                 .toList()
                 .subscribe(checkListItemModels -> mAdapter.addAll(checkListItemModels));
+        setRefreshing(false);
+    }
+
+    @Override
+    public void setRefreshing(boolean b){
         if(vh.recycler.swipeRefreshLayout != null)
-        vh.recycler.swipeRefreshLayout.setRefreshing(false);
+            vh.recycler.swipeRefreshLayout.setRefreshing(b);
     }
 
     @Override

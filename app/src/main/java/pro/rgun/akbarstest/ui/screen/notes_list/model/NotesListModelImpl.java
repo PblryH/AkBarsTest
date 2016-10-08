@@ -34,12 +34,12 @@ public class NotesListModelImpl implements NotesListModel {
 
     @Override
     public void getNotes(ResponseListener<List<Note>> listener) {
-        mNotesCurrentRepository.getNotes(listener::onGetResponse);
+        mNotesCurrentRepository.getNotes(listener);
     }
 
     @Override
     public void deleteNote(String id, ResponseListener<Void> listener) {
-        mNotesCurrentRepository.deleteNote(id,response -> listener.onGetResponse(null),false);
+        mNotesCurrentRepository.deleteNote(id,listener,false);
     }
 
     @Override

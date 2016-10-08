@@ -5,5 +5,8 @@ package pro.rgun.akbarstest.domain.repository;
  * <p>Колбек для методов интерфейса {@link NotesRepository}</p>
  */
 public interface ResponseListener<T> {
+
     void onGetResponse(T response);
+
+    void onError();
 }
