@@ -9,6 +9,7 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import timber.log.Timber;
@@ -54,7 +55,7 @@ public class VkWallStorageHelper {
                             edit.putInt(VK_WALL_ID, integer);
                             edit.apply();
                             int userId = pref.getInt(VK_USER_ID, 0);
-                            readFromVkWall(id, userId, new VkCallback<String>() {
+                            readFromVkWall(integer, userId, new VkCallback<String>() {
                                 @Override
                                 public void onSuccess(String result) {
                                     callback.onSuccess(result);
@@ -103,8 +104,14 @@ public class VkWallStorageHelper {
             @Override
             public void onComplete(VKResponse response) {
                 try {
-                    String text = response.json.getJSONArray("response").getJSONObject(0).getString("text");
-                    callback.onSuccess(text);
+                    JSONArray responses = response.json.getJSONArray("response");
+                    if(responses.length() == 0){
+                        callback.onError(MyVkError.STORAGE_NOT_FOUND);
+                    }
+                    else {
+                        String text = responses.getJSONObject(0).getString("text");
+                        callback.onSuccess(text);
+                    }
                 } catch (JSONException e) {
                     Timber.d("Parse error");
                     callback.onError(MyVkError.PARSE_ERROR);

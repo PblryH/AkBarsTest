@@ -20,10 +20,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                <data android:scheme="vk3974615"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
@@ -36,11 +32,6 @@
         </receiver>
 
         <service android:name=".sms.SmsService"/>
-
-        <activity
-            android:name="com.vk.sdk.VKOpenAuthActivity"
-            android:configChanges="keyboardHidden|orientation|layoutDirection"
-            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.vk.sdk.VKServiceActivity"
