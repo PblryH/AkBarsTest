@@ -117,7 +117,19 @@ public interface NoteDetailView extends BaseView<NoteDetailPresenter> {
     void showToast(String message);
 
     /**
+     * Показать тоаст
+     * @param resString сообщение
+     */
+    void showToast(int resString);
+
+    /**
      * Завершает активити
      */
     void finish();
+
+    /**
+     * Показать диалог при ошибке сохранения
+     */
+    void showErrorSavingDialog();
+
 }

@@ -59,6 +59,12 @@ public interface NotesListView extends BaseView<NotesListPresenter> {
     void showToast(String message);
 
     /**
+     * Показать тоаст
+     * @param resString сообщение
+     */
+    void showToast(int resString);
+
+    /**
      * Показать диалог выбора хранилища
      * @param currentStorageType
      */

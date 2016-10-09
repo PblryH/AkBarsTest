@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import pro.rgun.akbarstest.R;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.model.StorageType;
 import pro.rgun.akbarstest.domain.repository.ResponseListener;
@@ -68,7 +69,7 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
+                mView.showToast(R.string.dataReceiveError);
             }
         });
     }
@@ -84,7 +85,7 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
+                mView.showToast(R.string.dataReceiveError);
             }
         });
         mModel.subscribeToNotesUpdate(this);
@@ -110,7 +111,7 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
+                mView.showToast(R.string.dataReceiveError);
             }
         });
     }
@@ -125,7 +126,7 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
+                mView.showToast(R.string.dataReceiveError);
                 mView.setRefreshing(false);
             }
         });
@@ -142,7 +143,7 @@ public class NotesListPresenterImpl implements NotesListPresenter,Observer {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
+                mView.showToast(R.string.dataReceiveError);
             }
         });
     }

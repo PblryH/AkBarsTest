@@ -179,6 +179,11 @@ public class NotesListViewImpl implements
         Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void showToast(int resString) {
+        Toast.makeText(mActivity, resString, Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public void showChooseStorageDialog(StorageType currentStorageType, ChooserStorageDialogListener listener) {

@@ -24,4 +24,6 @@
     <string name="File">File</string>
     <string name="vkWall">VK Wall</string>
     <string name="title">Заголовок</string>
+    <string name="errorSavingDialogTitle">Ошибка при сохранении данных. \nХотите выйти без сохранения?</string>
+    <string name="dataReceiveError">Ошибка при получении данных</string>
 </resources>

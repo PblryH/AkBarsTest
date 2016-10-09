@@ -1,5 +1,6 @@
 package pro.rgun.akbarstest.ui.screen.note_detail.presenter;
 
+import pro.rgun.akbarstest.R;
 import pro.rgun.akbarstest.domain.model.Note;
 import pro.rgun.akbarstest.domain.repository.ResponseListener;
 import pro.rgun.akbarstest.ui.screen.note_detail.model.NoteDetailModel;
@@ -75,8 +76,7 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
                                            @Override
                                            public void onError() {
-                                               mView.showToast("Error");
-                                               mView.finish();
+                                               mView.showErrorSavingDialog();
                                            }
                                        });
                                mView.back();
@@ -84,8 +84,7 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
                            @Override
                            public void onError() {
-                               mView.showToast("Error");
-                               mView.finish();
+                               mView.showErrorSavingDialog();
                            }
                        });
     }
@@ -101,7 +100,7 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
+                mView.showToast(R.string.dataReceiveError);
                 mView.finish();
             }
         });
@@ -117,7 +116,7 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
+                mView.showToast(R.string.dataReceiveError);
             }
         });
     }
@@ -140,8 +139,7 @@ public class NoteDetailPresenterImpl implements NoteDetailPresenter {
 
             @Override
             public void onError() {
-                mView.showToast("Error");
-                mView.finish();
+                mView.showErrorSavingDialog();
             }
         });
     }

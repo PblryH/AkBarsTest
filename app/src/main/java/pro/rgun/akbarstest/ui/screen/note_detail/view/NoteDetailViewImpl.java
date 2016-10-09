@@ -212,7 +212,22 @@ public class NoteDetailViewImpl implements NoteDetailView {
     }
 
     @Override
+    public void showToast(int resString) {
+        Toast.makeText(mActivity, resString, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void finish() {
         mActivity.finish();
+    }
+
+    @Override
+    public void showErrorSavingDialog() {
+        new AlertDialog.Builder(mActivity)
+                .setTitle(R.string.errorSavingDialogTitle)
+                .setPositiveButton(R.string.yes, (dialogInterface, i) -> mActivity.finish())
+                .setNeutralButton(R.string.cancel, null)
+                .create()
+                .show();
     }
 }
