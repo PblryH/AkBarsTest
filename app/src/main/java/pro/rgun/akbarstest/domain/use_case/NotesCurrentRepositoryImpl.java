@@ -70,7 +70,9 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
         getNotesRepository().saveNote(note, new ResponseListener<Void>() {
             @Override
             public void onGetResponse(Void response) {
-                listener.onGetResponse(null);
+                if(listener != null) {
+                    listener.onGetResponse(null);
+                }
                 setChanged();
                 notifyObservers();
             }
@@ -78,7 +80,9 @@ public class NotesCurrentRepositoryImpl extends Observable implements NotesCurre
             @Override
             public void onError() {
                 Timber.d("onError");
-                listener.onError();
+                if(listener != null) {
+                    listener.onError();
+                }
             }
         });
     }
