@@ -35,6 +35,10 @@ public class SmsService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(intent == null){
+            stopSelf();
+            return START_NOT_STICKY;
+        }
         String smsFrom = intent.getExtras().getString(SMS_FROM);
         String smsBody = intent.getExtras().getString(SMS_BODY);
         showNotification(smsFrom,smsBody);
